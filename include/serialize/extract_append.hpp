@@ -1,7 +1,5 @@
 /** @file
  *
- *  @ingroup marshall_module
- *
  *  @brief Functions to extract arithmetic binary values from a byte buffer (in big-endian) to 
  *  native format; conversely, given an arithmetic binary value, append it to a buffer of bytes 
  *  in network endian order (big-endian).

@@ -1,7 +1,5 @@
 /** @file
  *
- * @ingroup test_module
- *
  * @brief Test scenarios for @c extract_val and @c append_val functions.
  *
  * @author Cliff Green, Roxanne Agerone

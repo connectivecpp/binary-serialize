@@ -4,8 +4,6 @@
  *  marshalling and unmarshalling (transform objects into and out of byte streams 
  *  for transmission over a network or for file IO).
  *
- *  @ingroup marshall_module
- *
  *  @brief Classes and functions to transform objects into a big-endian binary stream 
  *  of bytes (marshall) and the converse (unmarshall), transform a stream of bytes into 
  *  objects.
