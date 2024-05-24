@@ -17,7 +17,7 @@
 #include <cstddef> // std::byte
 #include <cstdint> // std::uint32_t, etc
 
-#include "marshall/extract_append.hpp"
+#include "serialize/extract_append.hpp"
 #include "utility/repeat.hpp"
 #include "utility/make_byte_array.hpp"
 #include "utility/cast_ptr_to.hpp"

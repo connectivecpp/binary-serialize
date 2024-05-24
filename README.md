@@ -12,7 +12,9 @@
 
 ## Overview
 
-The 
+The `binary_serialize` functions and classes provide serializing and unserializing of binary data. Serialization provides a way to transform application objects into and out of byte streams that can be sent over a network (or used for file IO).
+
+The serialization functionality in this repository is useful when explicit control is needed for every bit and byte. This allows a developer to match an existing wire protocol or encoding scheme or to define his or her own wire protocol. Support is provided for fundamental arithmetic types as well as certain C++ vocabulary types such as `std::optional`. Both big and little endian support is provided.
 
 ## Generated Documentation
 
@@ -20,7 +22,7 @@ The generated Doxygen documentation for `binary_serialize` is [here](https://con
 
 ## Dependencies
 
-The `binary_serialize` header file does not have any third-party dependencies. It uses C++ standard library headers only. The unit test code does have dependencies as noted below.
+The `binary_serialize` header files do not have any third-party dependencies. It uses C++ standard library headers only. The unit test code does have dependencies as noted below.
 
 ## C++ Standard
 
