@@ -14,7 +14,8 @@ include ( ../cmake/download_cpm.cmake )
 CPMAddPackage ( "gh:catchorg/Catch2@3.6.0" )
 CPMAddPackage ( "gh:connectivecpp/utility-rack@1.0.0" )
 
-set ( test_app_names extract_append_test
+set ( test_app_names byteswap_test
+                     extract_append_test
                      binary_serialize_test )
 # add executable
 foreach ( test_app_name IN LISTS test_app_names )

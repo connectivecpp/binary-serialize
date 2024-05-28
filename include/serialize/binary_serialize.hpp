@@ -1,15 +1,12 @@
-/** @file
+/** @mainpage Binary Serialuze, Classes and Functions For Binary Data Serialization
  *
- *  @defgroup marshall_module Classes and functions for big-endian binary data 
- *  marshalling and unmarshalling (transform objects into and out of byte streams 
- *  for transmission over a network or for file IO).
+ *  Serialization transforms objects into a byte stream for transmission over a 
+ *  network or for file IO. Deserialization is the converse, transforming a byte
+ *  stream into application level objects.
  *
- *  @brief Classes and functions to transform objects into a big-endian binary stream 
- *  of bytes (marshall) and the converse (unmarshall), transform a stream of bytes into 
- *  objects.
- *
- *  The @c utility-rack @c marshall and @c unmarshall functions and classes provide a 
- *  simple and light abstraction for binary big-endian serialization. There are no
+ *  This library differs from other binary serialization libraries in that the
+ *  main interfaces is a "std::format" like 
+ *  These functions and classes provide a simple and light abstraction for binary big-endian serialization. There are no
  *  message or element definitions, no embedded preprocesser syntax, and no extra 
  *  build steps.
  *
@@ -113,8 +110,8 @@
  *
  */
 
-#ifndef MARSHALL_HPP_INCLUDED
-#define MARSHALL_HPP_INCLUDED
+#ifndef BINARY_SERIALIZE_HPP_INCLUDED
+#define BINARY_SERIALIZE_HPP_INCLUDED
 
 #include "utility/cast_ptr_to.hpp"
 #include "marshall/shared_buffer.hpp"

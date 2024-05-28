@@ -18,9 +18,9 @@
 #include <cstdint> // std::uint32_t, etc
 
 #include "serialize/extract_append.hpp"
+
 #include "utility/repeat.hpp"
 #include "utility/make_byte_array.hpp"
-#include "utility/cast_ptr_to.hpp"
 
 constexpr std::uint32_t val1 = 0xDDCCBBAA;
 constexpr char val2 = static_cast<char>(0xEE);
@@ -28,119 +28,93 @@ constexpr std::int16_t val3 = 0x01FF;
 constexpr std::uint64_t val4 = 0x0908070605040302;
 constexpr std::int32_t val5 = 0xDEADBEEF;
 constexpr std::byte val6 = static_cast<std::byte>(0xAA);
-constexpr float float_val = 42.0f;
-constexpr double double_val = 197.0;
 
 constexpr int arr_sz = sizeof(val1)+sizeof(val2)+sizeof(val3)+
                        sizeof(val4)+sizeof(val5)+sizeof(val6);
 
-auto net_buf = chops::make_byte_array(0xDD, 0xCC, 0xBB, 0xAA, 0xEE, 0x01, 0xFF,
+auto net_buf_big = chops::make_byte_array(0xDD, 0xCC, 0xBB, 0xAA, 0xEE, 0x01, 0xFF,
     0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0xDE, 0xAD, 0xBE, 0xEF, 0xAA);
+auto net_buf_little = chops::make_byte_array(0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x01,
+    0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0xEF, 0xBE, 0xAD, 0xDE, 0xAA);
 
-TEST_CASE ( "Size and arithmetic assertions",
-            "[assertions]" ) {
-  REQUIRE (chops::detail::is_arithmetic_or_byte<std::int32_t>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<std::uint32_t>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<std::int16_t>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<std::uint16_t>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<std::byte>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<char>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<unsigned char>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<double>());
-  REQUIRE (chops::detail::is_arithmetic_or_byte<float>());
+TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
+
+  std::byte buf[arr_sz];
+  constexpr std::uint32_t v = 0x04030201;
+
+  SECTION ("Append_val with a single value, big endian") {
+    REQUIRE(chops::append_val<std::endian::big>(buf, v) == 4u);
+    REQUIRE (buf[0] == static_cast<std::byte>(0x04));
+    REQUIRE (buf[1] == static_cast<std::byte>(0x03));
+    REQUIRE (buf[2] == static_cast<std::byte>(0x02));
+    REQUIRE (buf[3] == static_cast<std::byte>(0x01));
+  }
+  SECTION ("Append_val with a single value, little endian") {
+    REQUIRE(chops::append_val<std::endian::little>(buf, v) == 4u);
+    REQUIRE (buf[0] == static_cast<std::byte>(0x01));
+    REQUIRE (buf[1] == static_cast<std::byte>(0x02));
+    REQUIRE (buf[2] == static_cast<std::byte>(0x03));
+    REQUIRE (buf[3] == static_cast<std::byte>(0x04));
+  }
+
+  SECTION ("Append_val with multiple values, big endian") {
+    std::byte* ptr = buf;
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val1) == 4u); ptr += sizeof(val1);
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val2) == 1u); ptr += sizeof(val2);
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val3) == 2u); ptr += sizeof(val3);
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val4) == 8u); ptr += sizeof(val4);
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val5) == 4u); ptr += sizeof(val5);
+    REQUIRE(chops::append_val<std::endian::big>(ptr, val6) == 1u);
+    chops::repeat(arr_sz, [&buf] (int i) { REQUIRE (buf[i] == net_buf_big[i]); } );
+  }
+  SECTION ("Append_val with multiple values, little endian") {
+    std::byte* ptr = buf;
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val1) == 4u); ptr += sizeof(val1);
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val2) == 1u); ptr += sizeof(val2);
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val3) == 2u); ptr += sizeof(val3);
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val4) == 8u); ptr += sizeof(val4);
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val5) == 4u); ptr += sizeof(val5);
+    REQUIRE(chops::append_val<std::endian::little>(ptr, val6) == 1u);
+    chops::repeat(arr_sz, [&buf] (int i) { REQUIRE (buf[i] == net_buf_little[i]); } );
+  }
 }
 
-SCENARIO ( "Endian detection",
-           "[endian] [little_endian]" ) {
+TEST_CASE ( "Extract values from a buffer", "[extract_val]" ) {
 
-  GIVEN ("A little-endian system") {
+  SECTION ( "Extract_val for multiple values in big endian buf") {
+    const std::byte* ptr = net_buf_big.data();
+    std::uint32_t v1 = chops::extract_val<std::endian::big, std::uint32_t>(ptr); ptr += sizeof(v1);
+    char v2 = chops::extract_val<std::endian::big, char>(ptr); ptr += sizeof(v2);
+    std::int16_t v3 = chops::extract_val<std::endian::big, std::int16_t>(ptr); ptr += sizeof(v3);
+    std::uint64_t v4 = chops::extract_val<std::endian::big, std::uint64_t>(ptr); ptr += sizeof(v4);
+    std::int32_t v5 = chops::extract_val<std::endian::big, std::int32_t>(ptr); ptr += sizeof(v5);
+    std::byte v6 = chops::extract_val<std::endian::big, std::byte>(ptr);
 
-    WHEN ("The detect_big_endian function is called") {
-      THEN ("the value is false") {
-        REQUIRE (!chops::big_endian);
-      }
-    }
-  } // end given
+    REQUIRE(v1 == val1);
+    REQUIRE(v2 == val2);
+    REQUIRE(v3 == val3);
+    REQUIRE(v4 == val4);
+    REQUIRE(v5 == val5);
+    REQUIRE(v6 == val6);
+  }
+  SECTION ( "Extract_val for multiple values in little endian buf") {
+    const std::byte* ptr = net_buf_little.data();
+    std::uint32_t v1 = chops::extract_val<std::endian::little, std::uint32_t>(ptr); ptr += sizeof(v1);
+    char v2 = chops::extract_val<std::endian::little, char>(ptr); ptr += sizeof(v2);
+    std::int16_t v3 = chops::extract_val<std::endian::little, std::int16_t>(ptr); ptr += sizeof(v3);
+    std::uint64_t v4 = chops::extract_val<std::endian::little, std::uint64_t>(ptr); ptr += sizeof(v4);
+    std::int32_t v5 = chops::extract_val<std::endian::little, std::int32_t>(ptr); ptr += sizeof(v5);
+    std::byte v6 = chops::extract_val<std::endian::little, std::byte>(ptr);
+
+    REQUIRE(v1 == val1);
+    REQUIRE(v2 == val2);
+    REQUIRE(v3 == val3);
+    REQUIRE(v4 == val4);
+    REQUIRE(v5 == val5);
+    REQUIRE(v6 == val6);
+  }
 }
 
-SCENARIO ( "Append values into a buffer",
-           "[append_val]" ) {
-
-  GIVEN ("An empty byte buffer") {
-    std::byte buf[arr_sz];
-
-    WHEN ("Append_val is called with a single value") {
-      constexpr std::uint32_t v = 0x04030201;
-      REQUIRE(chops::append_val(buf, v) == 4u);
-      THEN ("the buffer will contain the single value in network endian order") {
-        REQUIRE (buf[0] == static_cast<std::byte>(0x04));
-        REQUIRE (buf[1] == static_cast<std::byte>(0x03));
-        REQUIRE (buf[2] == static_cast<std::byte>(0x02));
-        REQUIRE (buf[3] == static_cast<std::byte>(0x01));
-      }
-    }
-    AND_WHEN ("Append_val is called with multiple values") {
-      std::byte* ptr = buf;
-      REQUIRE(chops::append_val(ptr, val1) == 4u); ptr += sizeof(val1);
-      REQUIRE(chops::append_val(ptr, val2) == 1u); ptr += sizeof(val2);
-      REQUIRE(chops::append_val(ptr, val3) == 2u); ptr += sizeof(val3);
-      REQUIRE(chops::append_val(ptr, val4) == 8u); ptr += sizeof(val4);
-      REQUIRE(chops::append_val(ptr, val5) == 4u); ptr += sizeof(val5);
-      REQUIRE(chops::append_val(ptr, val6) == 1u);
-      
-      THEN ("the buffer will have all of the values in network endian order") {
-        chops::repeat(arr_sz, [&buf] (int i) { REQUIRE (buf[i] == net_buf[i]); } );
-      }
-    }
-  } // end given
-}
-
-SCENARIO ( "Extract values from a buffer",
-           "[extract_val]" ) {
-
-  GIVEN ("A buffer of bytes in network endian order") {
-    WHEN ("Extract_val is called for multiple values") {
-
-      const std::byte* ptr = net_buf.data();
-      std::uint32_t v1 = chops::extract_val<std::uint32_t>(ptr); ptr += sizeof(v1);
-      char v2 = chops::extract_val<char>(ptr); ptr += sizeof(v2);
-      std::int16_t v3 = chops::extract_val<std::int16_t>(ptr); ptr += sizeof(v3);
-      std::uint64_t v4 = chops::extract_val<std::uint64_t>(ptr); ptr += sizeof(v4);
-      std::int32_t v5 = chops::extract_val<std::int32_t>(ptr); ptr += sizeof(v5);
-      std::byte v6 = chops::extract_val<std::byte>(ptr);
-
-      THEN ("the values are all in native order") {
-        REQUIRE(v1 == val1);
-        REQUIRE(v2 == val2);
-        REQUIRE(v3 == val3);
-        REQUIRE(v4 == val4);
-        REQUIRE(v5 == val5);
-        REQUIRE(v6 == val6);
-      }
-    }
-  } // end given
-}
-
-SCENARIO ( "Floating point append and extract",
-           "[floating_point]" ) {
-  GIVEN ("An empty byte buffer") {
-    std::byte buf[16];
-
-    WHEN ("Two floating point values are appended then extracted") {
-      std::byte* ptr = buf;
-      REQUIRE(chops::append_val(ptr, float_val) == 4u); ptr += sizeof(float_val);
-      REQUIRE(chops::append_val(ptr, double_val) == 8u);
-      ptr = buf;
-      auto f = chops::extract_val<float>(ptr); ptr += sizeof(f);
-      auto d = chops::extract_val<double>(ptr);
-
-      THEN ("the values are the same, in native order") {
-        REQUIRE (f == float_val);
-        REQUIRE (d == double_val);
-      }
-    }
-  } // end given
-}
 
 template <typename Dest, typename Src>
 void test_round_trip_var_int (Src src, std::size_t exp_sz) {
