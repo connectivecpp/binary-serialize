@@ -38,7 +38,7 @@ The unit test code uses [Catch2](https://github.com/catchorg/Catch2). If the `BI
 
 The unit test uses utilities from Connective C++'s [utility-rack](https://github.com/connectivecpp/utility-rack).
 
-Specific version (or branch) specs for the dependenies are in [test/CMakeLists.txt](test/CMakeLists.txt) in the `CPMAddPackage` commands.
+Specific version (or branch) specs for the dependencies are in the [test/CMakeLists.txt](test/CMakeLists.txt) file, look for the `CPMAddPackage` commands.
 
 ## Build and Run Unit Tests
 
