@@ -1,112 +1,112 @@
 /** @mainpage Binary Serialuze, Classes and Functions For Binary Data Serialization
  *
- *  Serialization transforms objects into a byte stream for transmission over a 
- *  network or for file IO. Deserialization is the converse, transforming a byte
- *  stream into application level objects.
+ * Serialization transforms objects into a byte stream for transmission over a 
+ * network or for file IO. Deserialization is the converse, transforming a byte
+ * stream into application level objects.
  *
- *  This library differs from other binary serialization libraries in that the
- *  main interfaces is a "std::format" like 
- *  These functions and classes provide a simple and light abstraction for binary big-endian serialization. There are no
- *  message or element definitions, no embedded preprocesser syntax, and no extra 
- *  build steps.
+ * This library differs from other binary serialization libraries in that the
+ * main interfaces is a "std::format" like 
+ * These functions and classes provide a simple and light abstraction for binary big-endian serialization. There are no
+ * message or element definitions, no embedded preprocesser syntax, and no extra 
+ * build steps.
  *
- *  These facilities are useful when explicit control of every bit and byte is needed 
- *  (and the wire protocol format is big-endian). Other marshalling and serialization
- *  designs have strengths and weaknesses (see higher level documentation for more
- *  explanation).
+ * These facilities are useful when explicit control of every bit and byte is needed 
+ * (and the wire protocol format is big-endian). Other marshalling and serialization
+ * designs have strengths and weaknesses (see higher level documentation for more
+ * explanation).
  *
- *  @note The design of the binary marshall and unmarshall functions is a good fit
- *  for a C++ metaprogamming implementation (using variadic templates). In particular,
- *  the primary design concept is a mapping of two (and sometimes three) types to a 
- *  single value. A typelist would allow a single function (or method) call to operate
- *  on multiple values, instead of being forced to call the @c marshall or @c unmarshall
- *  function once for each value (or sequence). However, the first release uses the 
- *  simpler (no metaprogramming, no variadic templates) implementation with a hope that
- *  a more sophisticated version will be available in the future.
+ * @note The design of the binary marshall and unmarshall functions is a good fit
+ * for a C++ metaprogamming implementation (using variadic templates). In particular,
+ * the primary design concept is a mapping of two (and sometimes three) types to a 
+ * single value. A typelist would allow a single function (or method) call to operate
+ * on multiple values, instead of being forced to call the @c marshall or @c unmarshall
+ * function once for each value (or sequence). However, the first release uses the 
+ * simpler (no metaprogramming, no variadic templates) implementation with a hope that
+ * a more sophisticated version will be available in the future.
  *
- *  The marshalling classes and functions are designed for networking (or file I/O), 
- *  where binary data marshalling and unmarshalling is needed to send and receive 
- *  messages (or to write or read defined portions of a file). Application code using 
- *  this library has full control of every byte that is sent or received. Application 
- *  objects are transformed into a @c std::byte buffer (and the converse) keeping a 
- *  binary representation in network (big-endian) order.
+ * The marshalling classes and functions are designed for networking (or file I/O), 
+ * where binary data marshalling and unmarshalling is needed to send and receive 
+ * messages (or to write or read defined portions of a file). Application code using 
+ * this library has full control of every byte that is sent or received. Application 
+ * objects are transformed into a @c std::byte buffer (and the converse) keeping a 
+ * binary representation in network (big-endian) order.
  *
- *  For example, a 32-bit binary number (either a signed or unsigned integer) in native
- *  endian order will be transformed into four 8-bit bytes in network (big) endian order
- *  for sending over a network (or for file I/O). Conversely, the four 8-bit bytes in
- *  network endian order will be transformed back into the original 32-bit binary number
- *  when received (or read as file I/O). A @c bool can be transformed into either a 8-bit,
- *  16-bit, 32-bit, or 64-bit number of either 1 or 0 (and back). A sequence 
- *  (@c std::vector or array or other container) can be transformed into a count (8-bit, 
- *  16-bit, et al) followed by each element of the sequence. A @c std::optional can be 
- *  transformed into a @c bool (8-bit, 16-bit, et al) followed by the value (if present).
+ * For example, a 32-bit binary number (either a signed or unsigned integer) in native
+ * endian order will be transformed into four 8-bit bytes in network (big) endian order
+ * for sending over a network (or for file I/O). Conversely, the four 8-bit bytes in
+ * network endian order will be transformed back into the original 32-bit binary number
+ * when received (or read as file I/O). A @c bool can be transformed into either a 8-bit,
+ * 16-bit, 32-bit, or 64-bit number of either 1 or 0 (and back). A sequence 
+ * (@c std::vector or array or other container) can be transformed into a count (8-bit, 
+ * 16-bit, et al) followed by each element of the sequence. A @c std::optional can be 
+ * transformed into a @c bool (8-bit, 16-bit, et al) followed by the value (if present).
  *
- *  No support is directly provided for higher level abstractions such as inheritance
- *  hierarchies, version numbers, type flags, or object relations. Pointers are also not 
- *  directly supported (which would typically be part of an object relation). No specific
- *  wire protocol or data encoding is specified (other than big-endian). These higher
- *  level abstractions as well as "saving and later restoring a full application state" 
- *  are better served by a library such as Boost Serialization or Google Protocol
- *  Buffers or Cap'n Proto.
+ * No support is directly provided for higher level abstractions such as inheritance
+ * hierarchies, version numbers, type flags, or object relations. Pointers are also not 
+ * directly supported (which would typically be part of an object relation). No specific
+ * wire protocol or data encoding is specified (other than big-endian). These higher
+ * level abstractions as well as "saving and later restoring a full application state" 
+ * are better served by a library such as Boost Serialization or Google Protocol
+ * Buffers or Cap'n Proto.
  *
- *  There is not any automatic generation of message processing code (e.g. Google 
- *  Protocol Buffers, a language neutral message definition process that generates 
- *  marshalling and unmarshalling code). Future C++ standards supporting reflection 
- *  may allow higher abstractions and more automation of marshalling code, but this
- *  library provides a modern C++ API (post C++ 11) for direct control of the 
- *  byte buffers. In particular, all of the build process complications required for
- *  code generation are not present in this (header only) library.
+ * There is not any automatic generation of message processing code (e.g. Google 
+ * Protocol Buffers, a language neutral message definition process that generates 
+ * marshalling and unmarshalling code). Future C++ standards supporting reflection 
+ * may allow higher abstractions and more automation of marshalling code, but this
+ * library provides a modern C++ API (post C++ 11) for direct control of the 
+ * byte buffers. In particular, all of the build process complications required for
+ * code generation are not present in this (header only) library.
  *
- *  Wire protocols that are in full text mode do not need to deal with binary endian
- *  swapping. However, sending or receiving data in a binary form is often desired 
- *  for size efficiency (e.g. sending images and video, large data sets, or where
- *  the message size needs to be as small as possible).
+ * Wire protocols that are in full text mode do not need to deal with binary endian
+ * swapping. However, sending or receiving data in a binary form is often desired 
+ * for size efficiency (e.g. sending images and video, large data sets, or where
+ * the message size needs to be as small as possible).
  *
- *  Functionality is provided for fundamental types, including @c bool, as well as vocabulary 
- *  types such as @c std::string and @c std::optional. Support is also provided for sequences, 
- *  where the number of elements is placed before the element sequence in the stream of
- *  bytes. 
+ * Functionality is provided for fundamental types, including @c bool, as well as vocabulary 
+ * types such as @c std::string and @c std::optional. Support is also provided for sequences, 
+ * where the number of elements is placed before the element sequence in the stream of
+ * bytes. 
  *
- *  Application defined types can be associated with a @c marshall and @c unmarshall 
- *  function overload, providing a convenient way to reuse the same lower-level 
- *  marshalling code. Specifically, a type @c MyType can be used in a sequence or in 
- *  a @c std::optional or as part of a higher level @c struct or @c class type without needing 
- *  to duplicate the marshalling calls within the @c MyType @c marshall and @c unmarshall 
- *  functions.
+ * Application defined types can be associated with a @c marshall and @c unmarshall 
+ * function overload, providing a convenient way to reuse the same lower-level 
+ * marshalling code. Specifically, a type @c MyType can be used in a sequence or in 
+ * a @c std::optional or as part of a higher level @c struct or @c class type without needing 
+ * to duplicate the marshalling calls within the @c MyType @c marshall and @c unmarshall 
+ * functions.
  * 
- *  @c std::variant and @c std::any are not directly supported and require value extraction 
- *  by the application. (Supporting @c std::variant or @c std::any might be a future 
- *  enhancement if a good design is proposed.) @c std::wstring and other non-char strings are 
- *  also not directly supported, and require additional calls from the application.
+ * @c std::variant and @c std::any are not directly supported and require value extraction 
+ * by the application. (Supporting @c std::variant or @c std::any might be a future 
+ * enhancement if a good design is proposed.) @c std::wstring and other non-char strings are 
+ * also not directly supported, and require additional calls from the application.
  *
- *  Central to the design of these marshalling and unmarshalling functions is a mapping of 
- *  two types to a single value. For marshalling, the two types are the native type (e.g. 
- *  @c int, @c short, @c bool), and the type to be used for the marshalling, typically
- *  a fixed width integer type, as specified in the @c <cstdint> header (e.g. 
- *  @c std::uint32_t, @c std::int16_t, @c std::int8_t). For unmarshalling, the same
- *  concept is used, a fixed width integer type that specifies the size in the byte
- *  buffer, and the native type, thus the application would specify that a @c std::int16_t
- *  in the byte buffer will be unmarshalled into an application @c int value.
+ * Central to the design of these marshalling and unmarshalling functions is a mapping of 
+ * two types to a single value. For marshalling, the two types are the native type (e.g. 
+ * @c int, @c short, @c bool), and the type to be used for the marshalling, typically
+ * a fixed width integer type, as specified in the @c <cstdint> header (e.g. 
+ * @c std::uint32_t, @c std::int16_t, @c std::int8_t). For unmarshalling, the same
+ * concept is used, a fixed width integer type that specifies the size in the byte
+ * buffer, and the native type, thus the application would specify that a @c std::int16_t
+ * in the byte buffer will be unmarshalled into an application @c int value.
  *
- *  @note No support is provided for little-endian in the byte buffer. No support is provided
- *  for mixed endian (big-endian with little-endian) or where the endianness is specified as a 
- *  type parameter. No support is provided for "in-place" swapping of values. All of these
- *  use cases can be implemented using other libraries such as Boost Endian.
+ * @note No support is provided for little-endian in the byte buffer. No support is provided
+ * for mixed endian (big-endian with little-endian) or where the endianness is specified as a 
+ * type parameter. No support is provided for "in-place" swapping of values. All of these
+ * use cases can be implemented using other libraries such as Boost Endian.
  *
- *  @note Performance considerations - for marshalling, iterative resizing of the output
- *  buffer is a fundamental operation. @c std::vector and @c mutable_shared_buffer 
- *  @c resize methods use efficient logic for internal buffer allocations (@c mutable_shared_buffer
- *  uses @c std::vector internally). Custom containers used as the buffer parameter should
- *  have similar efficient @c resize method logic. Calling @c reserve at appropriate places may 
- *  provide a small performance increase, at the cost of additional requirements on the buffer
- *  type.
+ * @note Performance considerations - for marshalling, iterative resizing of the output
+ * buffer is a fundamental operation. @c std::vector and @c mutable_shared_buffer 
+ * @c resize methods use efficient logic for internal buffer allocations (@c mutable_shared_buffer
+ * uses @c std::vector internally). Custom containers used as the buffer parameter should
+ * have similar efficient @c resize method logic. Calling @c reserve at appropriate places may 
+ * provide a small performance increase, at the cost of additional requirements on the buffer
+ * type.
  *
- *  @author Cliff Green
+ * @author Cliff Green
  *
- *  Copyright (c) 2019 by Cliff Green
+ * @copyright (c) 2019-2024 by Cliff Green
  *
- *  Distributed under the Boost Software License, Version 1.0. 
- *  (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ * Distributed under the Boost Software License, Version 1.0. 
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -114,8 +114,8 @@
 #define BINARY_SERIALIZE_HPP_INCLUDED
 
 #include "utility/cast_ptr_to.hpp"
-#include "marshall/shared_buffer.hpp"
-#include "marshall/extract_append.hpp"
+#include "buffer/shared_buffer.hpp"
+#include "serialize/extract_append.hpp"
 
 #include <cstddef> // std::byte, std::size_t, std::nullptr_t
 #include <cstdint> // std::uint32_t, etc
