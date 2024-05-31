@@ -10,6 +10,8 @@
 
 ![GH Tag](https://img.shields.io/github/v/tag/connectivecpp/binary-serialize?label=GH%20tag)
 
+![Licence](https://img.shields.io/badge/License-Boost%201.0-blue)
+
 ## Overview
 
 The `binary_serialize` functions and classes provide serializing and unserializing of binary data. Serialization provides a way to transform application objects into and out of byte streams that can be sent over a network (or used for file IO).
