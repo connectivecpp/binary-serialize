@@ -4,33 +4,25 @@
  * endian order) to native format; conversely, given an arithmetic binary value, append 
  * it to a buffer of bytes in the specified endian order.
  *
- * The functions in this file are low-level, handling fundamental arithmetic types and 
+ * The functions in this file are low-level. The handle fundamental arithmetic types and 
  * extracting or appending to @c std::byte buffers. It is meant to be the lower layer
  * of serializing utilities, where the next layer up provides buffer management,
  * sequences, and overloads for specific types such as @c std::string, @c bool, and 
  * @c std::optional.
  *
- *  @note When C++ 20 @c std::endian is available, many of these functions can be made
- *  @c constexpr and evaluated at compile time. Until then, run-time endian detection and 
- *  copying is performed.
+ * @note The variable sized integer functions (@c extract_var_int, @c append_var_int) 
+ * support the variable byte integer type in MQTT (Message Queuing Telemetry Transport),
+ * a commonly used IoT protocol. The code in this header is adapted from a 
+ * Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal 
+ * license:
+ * https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/
  *
- *  @note The variable sized integer functions (@c extract_var_int, @c append_var_int) 
- *  support the variable byte integer type in MQTT (Message Queuing Telemetry Transport),
- *  a commonly used IoT protocol. The code in this header is adapted from a 
- *  Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal 
- *  license:
- *  https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/
+ * @author Cliff Green, Roxanne Agerone, Uli Koehler
  *
- *  @note This implementation has manual generated unrolled loops for the byte moving and
- *  swapping. This can be improved in the future by using a compile-time unrolling utility, such 
- *  as the @c repeat function (compile time unrolling version) by Vittorio Romeo.
+ * @copyright (c) 2019-2024 by Cliff Green, Roxanne Agerone
  *
- *  @author Cliff Green, Roxanne Agerone, Uli Koehler
- *
- *  @copyright (c) 2019-2024 by Cliff Green, Roxanne Agerone
- *
- *  Distributed under the Boost Software License, Version 1.0. 
- *  (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ * Distributed under the Boost Software License, Version 1.0. 
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
@@ -191,19 +183,18 @@ constexpr std::size_t append_val(std::byte* buf, const T& val) noexcept {
 template<std::unsigned_integral T>
 constexpr std::size_t append_var_int(std::byte* output, T val) {
 
-  std::uint8_t* output_ptr = reinterpret_cast<std::uint8_t *>(output);
   std::size_t output_size = 0;
     
   // While more than 7 bits of data are left, occupy the last output byte
   // and set the next byte flag
   while (val > 127) {
 
-      output_ptr[output_size] = (static_cast<std::uint8_t> (val & 127)) | 128;
+      output[output_size] = std::bit_cast<std::byte>(static_cast<std::uint8_t>((static_cast<std::uint8_t> (val & 127)) | 128));
       //Remove the seven bits we just wrote
       val >>= 7;
       ++output_size;
   }
-  output_ptr[output_size++] = static_cast<std::uint8_t> (val) & 127;
+  output[output_size++] = std::bit_cast<std::byte>(static_cast<std::uint8_t>(static_cast<std::uint8_t> (val) & 127));
   return output_size;
 }
 /**
@@ -222,14 +213,11 @@ constexpr std::size_t append_var_int(std::byte* output, T val) {
  */
 template<std::unsigned_integral T>
 constexpr T extract_var_int(const std::byte* input, std::size_t input_size) {
-
-  const std::uint8_t* input_ptr = reinterpret_cast<const std::uint8_t *> (input);
-    
   T ret = 0;
   for (std::size_t i = 0; i < input_size; ++i) {
-      ret |= (input_ptr[i] & 127) << (7 * i);
+      ret |= (std::bit_cast<std::uint8_t>(input[i]) & 127) << (7 * i);
       //If the next-byte flag is set
-      if(!(input_ptr[i] & 128)) {
+      if(!(std::bit_cast<std::uint8_t>(input[i]) & 128)) {
           break;
       }
   }

@@ -1,4 +1,4 @@
-# Binary Serialize, Header-Only C++ 20 Binary Serialization Classes and Functions
+# Binary Serialize, Header-Only C++ 20 Binary Serialization Classes and Functions Using a `std::format` Like Syntax
 
 #### Unit Test and Documentation Generation Workflow Status
 
@@ -14,9 +14,19 @@
 
 ## Overview
 
-The `binary_serialize` functions and classes provide serializing and unserializing of binary data. Serialization provides a way to transform application objects into and out of byte streams that can be sent over a network (or used for file IO).
+The `binary_serialize` functions and classes provide serializing and unserializing of binary data. Serialization provides a way to transform application objects into and out of byte streams that can be sent over a network (or used for file IO). Many serialization libraries transform objects to and from text representations, but this library keeps data in binary formats.
 
 The serialization functionality in this repository is useful when explicit control is needed for every bit and byte. This allows a developer to match an existing wire protocol or encoding scheme or to define his or her own wire protocol. Support is provided for fundamental arithmetic types as well as certain C++ vocabulary types such as `std::optional`. Both big and little endian support is provided.
+
+This library uses `std::format` style formatting. For example:
+
+```
+(insert example code)
+```
+
+The documentation overview provides a comparison with other serialization libraries as well as a rationale for the design decisions.
+
+Inspiration and thanks go to [Louis Langholtz](https://github.com/louis-langholtz), who steered me towards considering the `std::format` API.
 
 ## Generated Documentation
 
