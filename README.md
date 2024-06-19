@@ -21,7 +21,33 @@ The serialization functionality in this repository is useful when explicit contr
 This library uses `std::format` style formatting. For example:
 
 ```
-(insert example code)
+  struct Hike {
+    unsigned int  distance;
+    int  elevation;
+    std::optional<std::string>> name;
+    std::vector<int> waypoints;
+  };
+  // ...
+  chops::mutable_shared_buffer buf;
+
+  chops::binary_serialize(buf, "{32ui}{16i}{8ui}{16ui}{16ui}{64i}", 
+                          hike_obj.distance, hike_obj.elevation, hike_obj.name, hike_obj.waypoints);
+
+  // ...
+  net_obj.send(buf);
+                                                                   
+```
+
+The buffer will contain the following:
+
+```
+  32 bit unsigned integer containing distance value
+  16 bit signed integer containing elevation value
+  8 bit unsigned integer corresponding to true or false for the optional
+  16 bit unsigned integer for the size of the name string
+  0 - N 8 bit characters for the name string
+  16 bit unsigned integer for the size of the waypoints vector
+  0 - N 64 bit signed integers for each waypoint value
 ```
 
 The documentation overview provides a comparison with other serialization libraries as well as a rationale for the design decisions.
