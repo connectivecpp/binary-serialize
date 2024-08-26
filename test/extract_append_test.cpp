@@ -20,7 +20,7 @@
 #include "serialize/extract_append.hpp"
 
 #include "utility/repeat.hpp"
-#include "utility/make_byte_array.hpp"
+#include "utility/byte_array.hpp"
 
 constexpr std::uint32_t val1 = 0xDDCCBBAA;
 constexpr char val2 = static_cast<char>(0xEE);
@@ -44,17 +44,17 @@ TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
 
   SECTION ("Append_val with a single value, big endian") {
     REQUIRE(chops::append_val<std::endian::big>(buf, v) == 4u);
-    REQUIRE (buf[0] == static_cast<std::byte>(0x04));
-    REQUIRE (buf[1] == static_cast<std::byte>(0x03));
-    REQUIRE (buf[2] == static_cast<std::byte>(0x02));
-    REQUIRE (buf[3] == static_cast<std::byte>(0x01));
+    REQUIRE (std::to_integer<int>(buf[0]) == 0x04);
+    REQUIRE (std::to_integer<int>(buf[1]) == 0x03);
+    REQUIRE (std::to_integer<int>(buf[2]) == 0x02);
+    REQUIRE (std::to_integer<int>(buf[3]) == 0x01);
   }
   SECTION ("Append_val with a single value, little endian") {
     REQUIRE(chops::append_val<std::endian::little>(buf, v) == 4u);
-    REQUIRE (buf[0] == static_cast<std::byte>(0x01));
-    REQUIRE (buf[1] == static_cast<std::byte>(0x02));
-    REQUIRE (buf[2] == static_cast<std::byte>(0x03));
-    REQUIRE (buf[3] == static_cast<std::byte>(0x04));
+    REQUIRE (std::to_integer<int>(buf[0]) == 0x01);
+    REQUIRE (std::to_integer<int>(buf[1]) == 0x02);
+    REQUIRE (std::to_integer<int>(buf[2]) == 0x03);
+    REQUIRE (std::to_integer<int>(buf[3]) == 0x04);
   }
 
   SECTION ("Append_val with multiple values, big endian") {
@@ -65,7 +65,8 @@ TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
     REQUIRE(chops::append_val<std::endian::big>(ptr, val4) == 8u); ptr += sizeof(val4);
     REQUIRE(chops::append_val<std::endian::big>(ptr, val5) == 4u); ptr += sizeof(val5);
     REQUIRE(chops::append_val<std::endian::big>(ptr, val6) == 1u);
-    chops::repeat(arr_sz, [&buf] (int i) { REQUIRE (buf[i] == net_buf_big[i]); } );
+    chops::repeat(arr_sz, [&buf] (int i) { 
+        REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_big[i])); } );
   }
   SECTION ("Append_val with multiple values, little endian") {
     std::byte* ptr = buf;
@@ -75,7 +76,8 @@ TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
     REQUIRE(chops::append_val<std::endian::little>(ptr, val4) == 8u); ptr += sizeof(val4);
     REQUIRE(chops::append_val<std::endian::little>(ptr, val5) == 4u); ptr += sizeof(val5);
     REQUIRE(chops::append_val<std::endian::little>(ptr, val6) == 1u);
-    chops::repeat(arr_sz, [&buf] (int i) { REQUIRE (buf[i] == net_buf_little[i]); } );
+    chops::repeat(arr_sz, [&buf] (int i) { 
+        REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_little[i])); } );
   }
 }
 
@@ -95,7 +97,7 @@ TEST_CASE ( "Extract values from a buffer", "[extract_val]" ) {
     REQUIRE(v3 == val3);
     REQUIRE(v4 == val4);
     REQUIRE(v5 == val5);
-    REQUIRE(v6 == val6);
+    REQUIRE(std::to_integer<int>(v6) == std::to_integer<int>(val6));
   }
   SECTION ( "Extract_val for multiple values in little endian buf") {
     const std::byte* ptr = net_buf_little.data();
@@ -111,7 +113,7 @@ TEST_CASE ( "Extract values from a buffer", "[extract_val]" ) {
     REQUIRE(v3 == val3);
     REQUIRE(v4 == val4);
     REQUIRE(v5 == val5);
-    REQUIRE(v6 == val6);
+    REQUIRE(std::to_integer<int>(v6) == std::to_integer<int>(val6));
   }
 }
 
@@ -131,9 +133,9 @@ TEST_CASE ( "Append and extract variable length integers","[append_var_int]" ) {
 
   {
     auto outsize = chops::append_var_int<std::uint32_t>(test_buf, 0xCAFE);
-    REQUIRE(static_cast<int> (test_buf[0]) == 254);
-    REQUIRE(static_cast<int> (test_buf[1]) == 149);
-    REQUIRE(static_cast<int> (test_buf[2]) == 3);
+    REQUIRE(std::to_integer<int>(test_buf[0]) == 254);
+    REQUIRE(std::to_integer<int>(test_buf[1]) == 149);
+    REQUIRE(std::to_integer<int>(test_buf[2]) == 3);
 
     auto output = chops::extract_var_int<unsigned int>(test_buf, outsize);
     
@@ -163,23 +165,23 @@ TEST_CASE ( "Append var len integer of 127","[append_var_int]" ) {
     
     std::byte test_buf [7];
     auto outsize = chops::append_var_int<unsigned int>(test_buf, 0x7F);
-    REQUIRE(static_cast<unsigned int> (test_buf[0]) == 127);
+    REQUIRE(std::to_integer<int>(test_buf[0]) == 127);
     REQUIRE(outsize == 1);
 }
 TEST_CASE ( "Append var len integer of 128","[append_var_int]" ) {
     
     std::byte test_buf [7];
     auto outsize = chops::append_var_int<unsigned int>(test_buf, 0x80);
-    REQUIRE(static_cast<unsigned int> (test_buf[0]) == 128); //byte flag set
-    REQUIRE(static_cast<unsigned int> (test_buf[1]) == 1);
+    REQUIRE(std::to_integer<int>(test_buf[0]) == 128); //byte flag set
+    REQUIRE(std::to_integer<int>(test_buf[1]) == 1);
     REQUIRE(outsize == 2);
 }
 TEST_CASE ( "Append var len integer larger than 4 bytes","[append_var_int]" ) {
     
     std::byte test_buf [7];
     auto outsize = chops::append_var_int<unsigned int>(test_buf, 0x10000000);
-    REQUIRE(static_cast<unsigned int> (test_buf[0]) == 128); //byte flag set
-    REQUIRE(static_cast<unsigned int> (test_buf[4]) == 1);
+    REQUIRE(std::to_integer<int>(test_buf[0]) == 128); //byte flag set
+    REQUIRE(std::to_integer<int>(test_buf[4]) == 1);
     REQUIRE(outsize == 5);
 }
 
