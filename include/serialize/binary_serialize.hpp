@@ -144,11 +144,27 @@ concept supports_expandable_buffer =
     { ctr.data() } -> std::same_as<std::byte*>;
   }
 
+template <typename Ctr>
+concept supports_endian_expandable_buffer = 
+  supports_expandable_buffer<Ctr> &&
+  requires (Ctr ctr) { 
+    typename Ctr::endian_type;
+  }
+
 template <supports_expandable_buffer Ctr = chops::mutable_shared_buffer,
          std::endian Endian = std::endian::little>
-struct expandable_buffer : Ctr {
-  using Endian;
-}
+class expandable_buffer {
+private:
+  Ctr      m_ctr;
+public:
+  using endian_type = Endian;
+  using value_type = std::byte;
+  Ctr& get_buf() noexcept { return m_ctr; }
+  std::size_t size() noexcept { return m_ctr.size(); }
+  std::byte* data() noexcept { return m_ctr.data(); }
+  void resize(std::size_t sz) noexcept m_ctr.resize(sz); }
+};
+
 /**
 
  * @brief Extract a sequence in network byte order from a @c std::byte buffer into the
@@ -286,29 +302,55 @@ private:
 // similar can be used for the Buf template parameter
 struct adl_tag { };
 
-// lower-level function template that performs the actual buffer manipulation and 
-// marshalling of a single value, with an ADL tag for full namespace inclusion in the
-// overload set; this function template is not called directly by application code, and
-// is only used with arithmetic values or a std::byte
-template <typename CastValType, typename T, typename Buf = chops::mutable_shared_buffer>
-Buf& marshall(Buf& buf, const T& val, adl_tag) {
-  auto old_sz = buf.size();
-  buf.resize(old_sz + sizeof(CastValType));
-  append_val(buf.data()+old_sz, static_cast<CastValType>(val));
-  return buf;
-}
 
 namespace detail {
 
-template <typename CastValType, typename T, typename Buf = expandable_buffer>
+template <integral_or_byte CastTypeVal, integral_or_byte T, 
+          supports_endian_expandable_buf Buf = expandable_buffer>
 constexpr Buf& serialize_val(Buf& buf, const T& val) {
   auto old_sz = buf.size();
-  buf.resize(old_sz + sizeof(CastValType));
-  append_val(buf.data()+old_sz, static_cast<CastValType>(val));
+  buf.resize(old_sz + sizeof(CastTypeVal));
+  append_val<Buf::endian_type>(buf.data()+old_sz, static_cast<CastTypeVal>(val));
   return buf;
 }
 
+template <integral_or_byte CastTypeVal, integral_or_byte T,
+          supports_endian_expandable Buf = chops::mutable_shared_buffer>
+constexpr Buf& serialize(Buf& buf, const T& val) {
+  return serialize_val<CastTypeVal> (buf, val);
 }
+
+template <integral_or_byte CastTypeSz, integral_or_byte CastTypeVal,
+          integral_or_byte T,
+          supports_endian_expandable Buf = chops::mutable_shared_buffer>
+constexpr Buf& serialize(Buf& buf, const T* seq, std::size_t sz) {
+  serialize_val<CastTypeSz> (buf, sz);
+  for (int i {0}; i < sz; ++i) {
+    serialize_val<CastTypeVal>(buf, seq[i]);
+  }
+  return buf;
+}
+
+template <integral_or_byte CastTypeSz,
+          supports_endian_expandable Buf = chops::mutable_shared_buffer>
+constexpr Buf& serialize(Buf& buf, const std::string& str) {
+  return serialize<CastTypeSz, std::byte> (buf, str.data(), std.size());
+}
+
+template <integral_or_byte CastTypeBool, integral_or_byte CastTypeVal,
+          integral_or_byte T,
+          supports_endian_expandable Buf = chops::mutable_shared_buffer>
+constexpr Buf& serialize(Buf& buf, const std::optional<T>& val) {
+  if (val) 
+    serialize_val<CastTypeBool> (buf, 1);
+    return serialize_val<CastTypeVal> (buf, *val);
+  }
+  serialize_val<CastTypeBool> (buf, 0);
+}
+
+}
+
+
 /**
  * @brief Marshall a single arithmetic value or a @c std::byte into a buffer of bytes.
  *
