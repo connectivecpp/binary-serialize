@@ -16,7 +16,9 @@
 
 The `binary_serialize` functions and classes provide serializing and unserializing of binary data. Serialization provides a way to transform application objects into and out of byte streams that can be sent over a network (or used for file IO). Many serialization libraries transform objects to and from text representations, but this library keeps data in binary formats.
 
-The serialization functionality in this repository is useful when explicit control is needed for every bit and byte. This allows a developer to match an existing wire protocol or encoding scheme or to define his or her own wire protocol. Support is provided for fundamental arithmetic types as well as certain C++ vocabulary types such as `std::optional`. Both big and little endian support is provided.
+The serialization functionality in this repository is useful when explicit control is needed for every bit and byte. This allows a developer to match an existing wire protocol or encoding scheme or to define his or her own wire protocol. Support is provided for fundamental arithmetic types as well as many C++ vocabulary types such as `std::optional`. Both big and little endian support is provided.
+
+Full flexibility is provided for sequences such as `std::string` or `std::vector`. The number of elements can be specified to take 8 or 16 or 32 (etc) bits, followed by the sequence of chars or array elements. Similar flexibility is provided for vocabulary types such as `std::optional`, where the boolean flag can be specified as 8 or 16 or 32 (etc) bits, followed by the object (or none, if there is no value in the optional).
 
 This library uses `std::format` style formatting. For example:
 
@@ -28,24 +30,25 @@ This library uses `std::format` style formatting. For example:
     std::vector<int> waypoints;
   };
   // ...
-  chops::mutable_shared_buffer buf;
+  chops::expandable_buffer<std::endian::big, chops::mutable_shared_buffer> buf;
 
-  chops::binary_serialize(buf, "{32ui}{16i}{8ui}{16ui}{16ui}{64i}", 
+  chops::binary_serialize(buf, "{32u}{16}{8u}{16u}{16u}{64}", 
                           hike_obj.distance, hike_obj.elevation, hike_obj.name, hike_obj.waypoints);
 
   // ...
-  net_obj.send(buf);
+  net_obj.send(buf.get_buf());
                                                                    
 ```
 
-The buffer will contain the following:
+The buffer will contain the following (note that truncation or casting will happen between the application
+object types and the serialized types as needed):
 
 ```
   32 bit unsigned integer containing distance value
   16 bit signed integer containing elevation value
   8 bit unsigned integer corresponding to true or false for the optional
-  16 bit unsigned integer for the size of the name string
-  0 - N 8 bit characters for the name string
+  16 bit unsigned integer for the size of the name string (if optional is true)
+  0 - N 8 bit characters for the name string (if optional is true)
   16 bit unsigned integer for the size of the waypoints vector
   0 - N 64 bit signed integers for each waypoint value
 ```
