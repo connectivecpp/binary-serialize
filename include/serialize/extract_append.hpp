@@ -4,9 +4,9 @@
  * endian order) to native format; conversely, given an arithmetic binary value, append 
  * it to a buffer of bytes in the specified endian order.
  *
- * The functions in this file are low-level. The handle fundamental arithmetic types and 
+ * The functions in this file are low-level. They handle fundamental arithmetic types and 
  * extracting or appending to @c std::byte buffers. It is meant to be the lower layer
- * of serializing utilities, where the next layer up provides buffer management,
+ * of serializing utilities, where the next higher layer provides buffer management,
  * sequences, and overloads for specific types such as @c std::string, @c bool, and 
  * @c std::optional.
  *
@@ -78,7 +78,7 @@ concept integral_or_byte = std::integral<T> || std::is_same_v<std::remove_cv_t<T
  * @brief Extract a value from a @c std::byte buffer into a fundamental integral
  * or @c std::byte type in native endianness, swapping bytes as needed.
  *
- * @tparam BufEndian The endianness of the buffer.
+ * @tparam BufEndian The endianness of the @c std::byte buffer.
  *
  * @tparam T Type of return value.
  *
@@ -166,7 +166,7 @@ constexpr std::size_t append_val(std::byte* buf, const T& val) noexcept {
  * will result in the native endianness of the platform. I.e. this works whether serialization 
  * is big-endian or little-endian.
  * 
- * @note Unsigned types are not supported.
+ * @note Signed types are not supported.
  *
  * @param val The input value. Any standard unsigned integer type is allowed.
  *
@@ -203,6 +203,8 @@ constexpr std::size_t append_var_int(std::byte* output, T val) {
  *
  * For consistency with the @c append_var_int function, only unsigned integers are
  * supported for the output type of this function.
+ *
+ * @note Signed types are not supported.
  *
  * @param input A variable-length encoded integer stored in a buffer of @c std::bytes.
  *

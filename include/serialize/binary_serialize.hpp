@@ -1,11 +1,14 @@
 /** @mainpage Binary Serialuze, Classes and Functions For Binary Data Serialization
  *
+ * ## Overview
+ *
  * Serialization transforms objects into a byte stream for transmission over a 
  * network or for file IO. Deserialization is the converse, transforming a byte
  * stream into application level objects.
  *
  * This library differs from other binary serialization libraries in that the
- * main interfaces is a "std::format" like 
+ * main interfaces is a "std::format" like interface. 
+ *
  * These functions and classes provide a simple and light abstraction for binary big-endian serialization. There are no
  * message or element definitions, no embedded preprocesser syntax, and no extra 
  * build steps.
@@ -113,7 +116,6 @@
 #ifndef BINARY_SERIALIZE_HPP_INCLUDED
 #define BINARY_SERIALIZE_HPP_INCLUDED
 
-#include "utility/cast_ptr_to.hpp"
 #include "buffer/shared_buffer.hpp"
 #include "serialize/extract_append.hpp"
 
@@ -127,12 +129,28 @@
 #include <iterator> // value type of iterator
 #include <array>
 #include <cassert>
+#include <concepts>
 
 #include <iostream> // debugging
 
 namespace chops {
 
+template <typename Ctr>
+concept supports_expandable_buffer = 
+  std::same_as<Ctr::value_type, std::byte> &&
+  requires (Ctr ctr) {
+    { ctr.size() } -> std::integral;
+    ctr.resize(std::size_t{});
+    { ctr.data() } -> std::same_as<std::byte*>;
+  }
+
+template <supports_expandable_buffer Ctr = chops::mutable_shared_buffer,
+         std::endian Endian = std::endian::little>
+struct expandable_buffer : Ctr {
+  using Endian;
+}
 /**
+
  * @brief Extract a sequence in network byte order from a @c std::byte buffer into the
  * provided container.
  *
@@ -188,6 +206,8 @@ Container extract_sequence(const std::byte* buf) noexcept(fill in) {
  * the elements in the sequence.
  *
  */
+
+
 /*
 template <typename Cnt, typename Iter>
 std::size_t append_sequence(std::byte* buf, Cnt cnt, Iter start, Iter end) noexcept {
@@ -278,6 +298,17 @@ Buf& marshall(Buf& buf, const T& val, adl_tag) {
   return buf;
 }
 
+namespace detail {
+
+template <typename CastValType, typename T, typename Buf = expandable_buffer>
+constexpr Buf& serialize_val(Buf& buf, const T& val) {
+  auto old_sz = buf.size();
+  buf.resize(old_sz + sizeof(CastValType));
+  append_val(buf.data()+old_sz, static_cast<CastValType>(val));
+  return buf;
+}
+
+}
 /**
  * @brief Marshall a single arithmetic value or a @c std::byte into a buffer of bytes.
  *

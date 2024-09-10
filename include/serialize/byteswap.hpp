@@ -1,6 +1,6 @@
 /** @file
  *
- * @brief This is a direct implementation of the C++ 23 std::byteswap function,
+ * @brief This is an implementation of the C++ 23 @c std::byteswap function,
  * for use in pre C++ 23 applications.
  *
  * This implementation is taken directly from the CPP Reference page:
@@ -18,7 +18,7 @@
 #ifndef BYTESWAP_HPP_INCLUDED
 #define BYTESWAP_HPP_INCLUDED
 
-#include <concepts> // std::integral
+#include <concepts> // std::integral concept
 #include <bit> // std::bit_cast
 #include <array>
 #include <cstddef> // std::byte
@@ -26,6 +26,17 @@
 
 namespace chops {
 
+/**
+ * @brief Perform an in-place byte swap on an integral type (if size of the 
+ * type is greater than one).
+ *
+ * @tparam T Type of value where swapping will occur.
+ *
+ * @param value Integral value to be byte swapped.
+ *
+ * @pre There must not be any padding bits in the type.
+ *
+ */
 template<std::integral T>
 constexpr T byteswap(T value) noexcept {
   if constexpr (sizeof(T) == 1u) {
