@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['data_0',['data',['../group__marshall__module.html',1,'Classes and functions for big-endian binary data'],['../classchops_1_1fixed__size__byte__array.html#a7f104fc3b4cd42af59863486082179ca',1,'chops::fixed_size_byte_array::data()']]]
+  ['data_0',['data',['../classfixed__size__byte__array.html#afe6d298372bd62d37442755ca3726f8e',1,'fixed_size_byte_array']]],
+  ['data_20serialization_1',['Binary Serialuze, Classes and Functions For Binary Data Serialization',['../index.html',1,'']]]
 ];

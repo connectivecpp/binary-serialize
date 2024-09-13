@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['clear_0',['clear',['../classchops_1_1fixed__size__byte__array.html#adadcdc882bf8494feef41dd098121dc2',1,'chops::fixed_size_byte_array']]]
+  ['byteswap_0',['byteswap',['../byteswap_8hpp.html#a5b101f5f592b8ad4710aa617a91caf3c',1,'chops']]]
 ];

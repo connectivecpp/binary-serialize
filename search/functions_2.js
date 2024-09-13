@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_0',['data',['../classchops_1_1fixed__size__byte__array.html#a7f104fc3b4cd42af59863486082179ca',1,'chops::fixed_size_byte_array']]]
+  ['clear_0',['clear',['../classfixed__size__byte__array.html#a885b5383d5c6d302acc1d7d0a6d4b6c7',1,'fixed_size_byte_array']]]
 ];

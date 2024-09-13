@@ -1,11 +1,24 @@
 <map id="/github/workspace/include/serialize/extract_append.hpp" name="/github/workspace/include/serialize/extract_append.hpp">
-<area shape="rect" id="Node000001" title="Functions to extract arithmetic binary values from a byte buffer (in big&#45;endian) to native format; co..." alt="" coords="154,5,342,46"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,94,150,120"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,49,119,90,116,85,204,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="173,94,238,120"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="240,48,222,81,217,79,235,45"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="262,94,322,120"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="261,45,280,79,276,82,257,48"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="346,94,428,120"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="284,44,354,84,351,88,281,49"/>
+<area shape="rect" id="Node000001" title="Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native f..." alt="" coords="242,5,430,46"/>
+<area shape="rect" id="Node000002" href="$byteswap_8hpp.html" title="This is an implementation of the C++ 23 std::byteswap function, for use in pre C++ 23 applications." alt="" coords="122,94,273,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="303,49,233,88,230,84,300,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,168,80,193"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="242,40,168,60,132,76,99,96,73,124,55,155,51,152,69,121,95,92,129,71,166,55,240,35"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="111,168,150,193"/>
+<area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="242,46,162,67,130,81,111,96,106,109,106,123,117,154,112,155,100,124,100,108,107,92,128,76,160,62,240,41"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="178,168,227,193"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="331,47,313,83,287,121,264,143,239,161,236,157,260,139,283,118,309,81,326,45"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="272,168,336,193"/>
+<area shape="poly" id="edge11_Node000001_Node000006" title=" " alt="" coords="339,47,338,81,332,120,319,155,314,153,327,119,332,81,334,46"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="369,168,444,193"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="347,45,397,152,392,154,342,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="450,94,510,120"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="373,44,446,84,443,88,371,49"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="534,94,615,120"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="396,44,524,86,523,91,395,49"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="172,123,84,163,81,158,170,118"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="188,122,154,158,150,154,184,118"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,120,203,152,198,152,195,120"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="217,118,274,156,272,161,214,122"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="234,118,357,160,356,165,232,123"/>
 </map>

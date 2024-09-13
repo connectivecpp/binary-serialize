@@ -74,16 +74,19 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#concepts">Concepts</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">extract_append.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Functions to extract arithmetic binary values from a byte buffer (in big-endian) to native format; conversely, given an arithmetic binary value, append it to a buffer of bytes in network endian order (big-endian).  
+<p>Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native format; conversely, given an arithmetic binary value, append it to a buffer of bytes in the specified endian order.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;utility/cast_ptr_to.hpp&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="byteswap_8hpp_source.html">serialize/byteswap.hpp</a>&quot;</code><br />
+<code>#include &lt;concepts&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;bit&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
@@ -92,15 +95,28 @@ Include dependency graph for extract_append.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="extract__append_8hpp__incl.png" border="0" usemap="#a_2github_2workspace_2include_2serialize_2extract__append_8hpp" alt=""/></div>
 <map name="a_2github_2workspace_2include_2serialize_2extract__append_8hpp" id="a_2github_2workspace_2include_2serialize_2extract__append_8hpp">
-<area shape="rect" title="Functions to extract arithmetic binary values from a byte buffer (in big&#45;endian) to native format; co..." alt="" coords="154,5,342,46"/>
-<area shape="rect" title=" " alt="" coords="5,94,150,120"/>
-<area shape="poly" title=" " alt="" coords="207,49,119,90,116,85,204,44"/>
-<area shape="rect" title=" " alt="" coords="173,94,238,120"/>
-<area shape="poly" title=" " alt="" coords="240,48,222,81,217,79,235,45"/>
-<area shape="rect" title=" " alt="" coords="262,94,322,120"/>
-<area shape="poly" title=" " alt="" coords="261,45,280,79,276,82,257,48"/>
-<area shape="rect" title=" " alt="" coords="346,94,428,120"/>
-<area shape="poly" title=" " alt="" coords="284,44,354,84,351,88,281,49"/>
+<area shape="rect" title="Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native f..." alt="" coords="242,5,430,46"/>
+<area shape="rect" href="byteswap_8hpp.html" title="This is an implementation of the C++ 23 std::byteswap function, for use in pre C++ 23 applications." alt="" coords="122,94,273,120"/>
+<area shape="poly" title=" " alt="" coords="303,49,233,88,230,84,300,44"/>
+<area shape="rect" title=" " alt="" coords="5,168,80,193"/>
+<area shape="poly" title=" " alt="" coords="242,40,168,60,132,76,99,96,73,124,55,155,51,152,69,121,95,92,129,71,166,55,240,35"/>
+<area shape="rect" title=" " alt="" coords="111,168,150,193"/>
+<area shape="poly" title=" " alt="" coords="242,46,162,67,130,81,111,96,106,109,106,123,117,154,112,155,100,124,100,108,107,92,128,76,160,62,240,41"/>
+<area shape="rect" title=" " alt="" coords="178,168,227,193"/>
+<area shape="poly" title=" " alt="" coords="331,47,313,83,287,121,264,143,239,161,236,157,260,139,283,118,309,81,326,45"/>
+<area shape="rect" title=" " alt="" coords="272,168,336,193"/>
+<area shape="poly" title=" " alt="" coords="339,47,338,81,332,120,319,155,314,153,327,119,332,81,334,46"/>
+<area shape="rect" title=" " alt="" coords="369,168,444,193"/>
+<area shape="poly" title=" " alt="" coords="347,45,397,152,392,154,342,47"/>
+<area shape="rect" title=" " alt="" coords="450,94,510,120"/>
+<area shape="poly" title=" " alt="" coords="373,44,446,84,443,88,371,49"/>
+<area shape="rect" title=" " alt="" coords="534,94,615,120"/>
+<area shape="poly" title=" " alt="" coords="396,44,524,86,523,91,395,49"/>
+<area shape="poly" title=" " alt="" coords="172,123,84,163,81,158,170,118"/>
+<area shape="poly" title=" " alt="" coords="188,122,154,158,150,154,184,118"/>
+<area shape="poly" title=" " alt="" coords="201,120,203,152,198,152,195,120"/>
+<area shape="poly" title=" " alt="" coords="217,118,274,156,272,161,214,122"/>
+<area shape="poly" title=" " alt="" coords="234,118,357,160,356,165,232,123"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -108,164 +124,61 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="extract__append_8hpp__dep__incl.png" border="0" usemap="#a_2github_2workspace_2include_2serialize_2extract__append_8hppdep" alt=""/></div>
 <map name="a_2github_2workspace_2include_2serialize_2extract__append_8hppdep" id="a_2github_2workspace_2include_2serialize_2extract__append_8hppdep">
-<area shape="rect" title="Functions to extract arithmetic binary values from a byte buffer (in big&#45;endian) to native format; co..." alt="" coords="5,5,194,46"/>
-<area shape="rect" href="extract__append__test_8cpp.html" title="Test scenarios for extract_val and append_val functions." alt="" coords="16,94,183,135"/>
-<area shape="poly" title=" " alt="" coords="102,62,102,94,97,94,97,62"/>
+<area shape="rect" title="Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native f..." alt="" coords="105,5,294,46"/>
+<area shape="rect" href="binary__serialize_8hpp_source.html" title=" " alt="" coords="5,94,194,135"/>
+<area shape="poly" title=" " alt="" coords="167,58,124,96,120,92,164,54"/>
+<area shape="rect" href="extract__append__test_8cpp.html" title="Test scenarios for extract_val and append_val functions." alt="" coords="218,94,384,135"/>
+<area shape="poly" title=" " alt="" coords="236,54,280,92,276,96,232,58"/>
 </map>
 </div>
 </div>
 <p><a href="extract__append_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structchops_1_1detail_1_1size__tag.html">chops::detail::size_tag&lt; int &gt;</a></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptchops_1_1integral__or__byte.html">chops::integral_or_byte</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a381b87ec22420930bcadf6261951155e" id="r_a381b87ec22420930bcadf6261951155e"><td class="memTemplParams" colspan="2"><a id="a381b87ec22420930bcadf6261951155e" name="a381b87ec22420930bcadf6261951155e"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a381b87ec22420930bcadf6261951155e"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_swap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 1u &gt; *) noexcept</td></tr>
-<tr class="separator:a381b87ec22420930bcadf6261951155e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82e044dc5d74595457cf44eb2653c4d4" id="r_a82e044dc5d74595457cf44eb2653c4d4"><td class="memTemplParams" colspan="2"><a id="a82e044dc5d74595457cf44eb2653c4d4" name="a82e044dc5d74595457cf44eb2653c4d4"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a82e044dc5d74595457cf44eb2653c4d4"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_noswap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 1u &gt; *) noexcept</td></tr>
-<tr class="separator:a82e044dc5d74595457cf44eb2653c4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf9d85822512d200ac324fd7a714ba1d" id="r_adf9d85822512d200ac324fd7a714ba1d"><td class="memTemplParams" colspan="2"><a id="adf9d85822512d200ac324fd7a714ba1d" name="adf9d85822512d200ac324fd7a714ba1d"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:adf9d85822512d200ac324fd7a714ba1d"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_swap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 2u &gt; *) noexcept</td></tr>
-<tr class="separator:adf9d85822512d200ac324fd7a714ba1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab74bbda756a1db177cd468019937360b" id="r_ab74bbda756a1db177cd468019937360b"><td class="memTemplParams" colspan="2"><a id="ab74bbda756a1db177cd468019937360b" name="ab74bbda756a1db177cd468019937360b"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab74bbda756a1db177cd468019937360b"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_noswap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 2u &gt; *) noexcept</td></tr>
-<tr class="separator:ab74bbda756a1db177cd468019937360b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a341bea9ebbf7a106bbc1ee3cf4edf8a2" id="r_a341bea9ebbf7a106bbc1ee3cf4edf8a2"><td class="memTemplParams" colspan="2"><a id="a341bea9ebbf7a106bbc1ee3cf4edf8a2" name="a341bea9ebbf7a106bbc1ee3cf4edf8a2"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a341bea9ebbf7a106bbc1ee3cf4edf8a2"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_swap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 4u &gt; *) noexcept</td></tr>
-<tr class="separator:a341bea9ebbf7a106bbc1ee3cf4edf8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1a21e583a3121dd05f4da40e1e46255" id="r_ad1a21e583a3121dd05f4da40e1e46255"><td class="memTemplParams" colspan="2"><a id="ad1a21e583a3121dd05f4da40e1e46255" name="ad1a21e583a3121dd05f4da40e1e46255"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad1a21e583a3121dd05f4da40e1e46255"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_noswap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 4u &gt; *) noexcept</td></tr>
-<tr class="separator:ad1a21e583a3121dd05f4da40e1e46255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed9f0550e3f088eda6d2ea7a26533f8e" id="r_aed9f0550e3f088eda6d2ea7a26533f8e"><td class="memTemplParams" colspan="2"><a id="aed9f0550e3f088eda6d2ea7a26533f8e" name="aed9f0550e3f088eda6d2ea7a26533f8e"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aed9f0550e3f088eda6d2ea7a26533f8e"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_swap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 8u &gt; *) noexcept</td></tr>
-<tr class="separator:aed9f0550e3f088eda6d2ea7a26533f8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9eb517e4ac91a27a858731eb56a64656" id="r_a9eb517e4ac91a27a858731eb56a64656"><td class="memTemplParams" colspan="2"><a id="a9eb517e4ac91a27a858731eb56a64656" name="a9eb517e4ac91a27a858731eb56a64656"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9eb517e4ac91a27a858731eb56a64656"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_noswap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 8u &gt; *) noexcept</td></tr>
-<tr class="separator:a9eb517e4ac91a27a858731eb56a64656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24e33e688d542b86bd4bbea33f604855" id="r_a24e33e688d542b86bd4bbea33f604855"><td class="memTemplParams" colspan="2"><a id="a24e33e688d542b86bd4bbea33f604855" name="a24e33e688d542b86bd4bbea33f604855"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a24e33e688d542b86bd4bbea33f604855"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_swap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 16u &gt; *) noexcept</td></tr>
-<tr class="separator:a24e33e688d542b86bd4bbea33f604855"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07d04b5e98c3cd6ed2c28e6833dc29e6" id="r_a07d04b5e98c3cd6ed2c28e6833dc29e6"><td class="memTemplParams" colspan="2"><a id="a07d04b5e98c3cd6ed2c28e6833dc29e6" name="a07d04b5e98c3cd6ed2c28e6833dc29e6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a07d04b5e98c3cd6ed2c28e6833dc29e6"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::extract_val_noswap</b> (const std::byte *buf, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 16u &gt; *) noexcept</td></tr>
-<tr class="separator:a07d04b5e98c3cd6ed2c28e6833dc29e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab76823bf82435adbcd58b7775578fc69" id="r_ab76823bf82435adbcd58b7775578fc69"><td class="memTemplParams" colspan="2"><a id="ab76823bf82435adbcd58b7775578fc69" name="ab76823bf82435adbcd58b7775578fc69"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab76823bf82435adbcd58b7775578fc69"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_swap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 1u &gt; *) noexcept</td></tr>
-<tr class="separator:ab76823bf82435adbcd58b7775578fc69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fd821c13a458facc8404ba9eb5d96f6" id="r_a9fd821c13a458facc8404ba9eb5d96f6"><td class="memTemplParams" colspan="2"><a id="a9fd821c13a458facc8404ba9eb5d96f6" name="a9fd821c13a458facc8404ba9eb5d96f6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9fd821c13a458facc8404ba9eb5d96f6"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_noswap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 1u &gt; *) noexcept</td></tr>
-<tr class="separator:a9fd821c13a458facc8404ba9eb5d96f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39857d465114c45a420bdd93b973bde6" id="r_a39857d465114c45a420bdd93b973bde6"><td class="memTemplParams" colspan="2"><a id="a39857d465114c45a420bdd93b973bde6" name="a39857d465114c45a420bdd93b973bde6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a39857d465114c45a420bdd93b973bde6"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_swap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 2u &gt; *) noexcept</td></tr>
-<tr class="separator:a39857d465114c45a420bdd93b973bde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b8b80cad927342957f2ce17364585eb" id="r_a5b8b80cad927342957f2ce17364585eb"><td class="memTemplParams" colspan="2"><a id="a5b8b80cad927342957f2ce17364585eb" name="a5b8b80cad927342957f2ce17364585eb"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a5b8b80cad927342957f2ce17364585eb"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_noswap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 2u &gt; *) noexcept</td></tr>
-<tr class="separator:a5b8b80cad927342957f2ce17364585eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7562f91b775f1835cbfffcbe8dc6e763" id="r_a7562f91b775f1835cbfffcbe8dc6e763"><td class="memTemplParams" colspan="2"><a id="a7562f91b775f1835cbfffcbe8dc6e763" name="a7562f91b775f1835cbfffcbe8dc6e763"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7562f91b775f1835cbfffcbe8dc6e763"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_swap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 4u &gt; *) noexcept</td></tr>
-<tr class="separator:a7562f91b775f1835cbfffcbe8dc6e763"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b3f547a15f6816ae33b81a6364b34c6" id="r_a7b3f547a15f6816ae33b81a6364b34c6"><td class="memTemplParams" colspan="2"><a id="a7b3f547a15f6816ae33b81a6364b34c6" name="a7b3f547a15f6816ae33b81a6364b34c6"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a7b3f547a15f6816ae33b81a6364b34c6"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_noswap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 4u &gt; *) noexcept</td></tr>
-<tr class="separator:a7b3f547a15f6816ae33b81a6364b34c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1feb6825a9ed1f37634d968c885d067f" id="r_a1feb6825a9ed1f37634d968c885d067f"><td class="memTemplParams" colspan="2"><a id="a1feb6825a9ed1f37634d968c885d067f" name="a1feb6825a9ed1f37634d968c885d067f"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a1feb6825a9ed1f37634d968c885d067f"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_swap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 8u &gt; *) noexcept</td></tr>
-<tr class="separator:a1feb6825a9ed1f37634d968c885d067f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1b643bf64c555f00a75d93731ed6c0d" id="r_ab1b643bf64c555f00a75d93731ed6c0d"><td class="memTemplParams" colspan="2"><a id="ab1b643bf64c555f00a75d93731ed6c0d" name="ab1b643bf64c555f00a75d93731ed6c0d"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab1b643bf64c555f00a75d93731ed6c0d"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_noswap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 8u &gt; *) noexcept</td></tr>
-<tr class="separator:ab1b643bf64c555f00a75d93731ed6c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add511d236607f841a37d9e06e8014635" id="r_add511d236607f841a37d9e06e8014635"><td class="memTemplParams" colspan="2"><a id="add511d236607f841a37d9e06e8014635" name="add511d236607f841a37d9e06e8014635"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:add511d236607f841a37d9e06e8014635"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_swap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 16u &gt; *) noexcept</td></tr>
-<tr class="separator:add511d236607f841a37d9e06e8014635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb0719f42aa4be4220f40a19529524b" id="r_a2cb0719f42aa4be4220f40a19529524b"><td class="memTemplParams" colspan="2"><a id="a2cb0719f42aa4be4220f40a19529524b" name="a2cb0719f42aa4be4220f40a19529524b"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2cb0719f42aa4be4220f40a19529524b"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::append_val_noswap</b> (std::byte *buf, const T &amp;val, const <a class="el" href="structchops_1_1detail_1_1size__tag.html">size_tag</a>&lt; 16u &gt; *) noexcept</td></tr>
-<tr class="separator:a2cb0719f42aa4be4220f40a19529524b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac760c0e24efe9622acf69b72d2a912e2" id="r_ac760c0e24efe9622acf69b72d2a912e2"><td class="memTemplParams" colspan="2"><a id="ac760c0e24efe9622acf69b72d2a912e2" name="ac760c0e24efe9622acf69b72d2a912e2"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ac760c0e24efe9622acf69b72d2a912e2"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::assert_size</b> () noexcept</td></tr>
-<tr class="separator:ac760c0e24efe9622acf69b72d2a912e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3903ce0d9e11d2d12610daef1153097" id="r_ae3903ce0d9e11d2d12610daef1153097"><td class="memTemplParams" colspan="2"><a id="ae3903ce0d9e11d2d12610daef1153097" name="ae3903ce0d9e11d2d12610daef1153097"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae3903ce0d9e11d2d12610daef1153097"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::is_arithmetic_or_byte</b> () noexcept</td></tr>
-<tr class="separator:ae3903ce0d9e11d2d12610daef1153097"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb7d00aa6f783d6ded148f2f39ba43f9" id="r_acb7d00aa6f783d6ded148f2f39ba43f9"><td class="memTemplParams" colspan="2"><a id="acb7d00aa6f783d6ded148f2f39ba43f9" name="acb7d00aa6f783d6ded148f2f39ba43f9"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:acb7d00aa6f783d6ded148f2f39ba43f9"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>chops::detail::assert_arithmetic_or_byte</b> () noexcept</td></tr>
-<tr class="separator:acb7d00aa6f783d6ded148f2f39ba43f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a568ec0d3a9d1f181ecb904a21dddd2b0" id="r_a568ec0d3a9d1f181ecb904a21dddd2b0"><td class="memItemLeft" align="right" valign="top"><a id="a568ec0d3a9d1f181ecb904a21dddd2b0" name="a568ec0d3a9d1f181ecb904a21dddd2b0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>chops::detect_big_endian</b> () noexcept</td></tr>
-<tr class="separator:a568ec0d3a9d1f181ecb904a21dddd2b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab59bc2904ad9486a9b309bdebbd83ba2" id="r_ab59bc2904ad9486a9b309bdebbd83ba2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ab59bc2904ad9486a9b309bdebbd83ba2"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#ab59bc2904ad9486a9b309bdebbd83ba2">chops::extract_val</a> (const std::byte *buf) noexcept</td></tr>
-<tr class="memdesc:ab59bc2904ad9486a9b309bdebbd83ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract a value in network byte order (big-endian) from a <code>std::byte</code> buffer into a fundamental arithmetic type in native endianness, swapping bytes as needed.  <br /></td></tr>
-<tr class="separator:ab59bc2904ad9486a9b309bdebbd83ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a806139ac5f96fba4ef57452bcb3bcb01" id="r_a806139ac5f96fba4ef57452bcb3bcb01"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a806139ac5f96fba4ef57452bcb3bcb01"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#a806139ac5f96fba4ef57452bcb3bcb01">chops::append_val</a> (std::byte *buf, const T &amp;val) noexcept</td></tr>
-<tr class="memdesc:a806139ac5f96fba4ef57452bcb3bcb01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a fundamental arithmetic value to a <code>std::byte</code> buffer, swapping into network endian order (big-endian) as needed.  <br /></td></tr>
-<tr class="separator:a806139ac5f96fba4ef57452bcb3bcb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9845dd8c4b9246615481a1c6f449b0f" id="r_ae9845dd8c4b9246615481a1c6f449b0f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae9845dd8c4b9246615481a1c6f449b0f"><td class="memTemplItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#ae9845dd8c4b9246615481a1c6f449b0f">chops::append_var_int</a> (std::byte *output, T val)</td></tr>
-<tr class="memdesc:ae9845dd8c4b9246615481a1c6f449b0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode an unsigned integer into a variable length buffer of bytes using the MSB (most significant bit) algorithm.  <br /></td></tr>
-<tr class="separator:ae9845dd8c4b9246615481a1c6f449b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ca0853fe2aff5f30398cf7087d31b07" id="r_a9ca0853fe2aff5f30398cf7087d31b07"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9ca0853fe2aff5f30398cf7087d31b07"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#a9ca0853fe2aff5f30398cf7087d31b07">chops::extract_var_int</a> (const std::byte *input, std::size_t input_size)</td></tr>
-<tr class="memdesc:a9ca0853fe2aff5f30398cf7087d31b07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a buffer of <code>std::bytes</code> that hold a variable sized integer, decode them into an unsigned integer.  <br /></td></tr>
-<tr class="separator:a9ca0853fe2aff5f30398cf7087d31b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ae399e619334dea3d7b19dc2382bac66f" id="r_ae399e619334dea3d7b19dc2382bac66f"><td class="memItemLeft" align="right" valign="top"><a id="ae399e619334dea3d7b19dc2382bac66f" name="ae399e619334dea3d7b19dc2382bac66f"></a>
-const bool&#160;</td><td class="memItemRight" valign="bottom"><b>chops::big_endian</b> = detect_big_endian()</td></tr>
-<tr class="separator:ae399e619334dea3d7b19dc2382bac66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a459b2f0978a1390fc05186a26c495777" id="r_a459b2f0978a1390fc05186a26c495777"><td class="memTemplParams" colspan="2">template&lt;std::endian BufEndian, integral_or_byte T&gt; </td></tr>
+<tr class="memitem:a459b2f0978a1390fc05186a26c495777"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">constexpr</a> <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#a459b2f0978a1390fc05186a26c495777">chops::extract_val</a> (<a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">const</a> std::byte *<a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">buf</a>) <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">noexcept</a></td></tr>
+<tr class="memdesc:a459b2f0978a1390fc05186a26c495777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract a value from a <code>std::byte</code> buffer into a fundamental integral or <code>std::byte</code> type in native endianness, swapping bytes as needed.  <br /></td></tr>
+<tr class="separator:a459b2f0978a1390fc05186a26c495777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af439426dbbcbf67b97170fa982159495" id="r_af439426dbbcbf67b97170fa982159495"><td class="memTemplParams" colspan="2">template&lt;std::endian BufEndian, integral_or_byte T&gt; </td></tr>
+<tr class="memitem:af439426dbbcbf67b97170fa982159495"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">chops::append_val</a> (std::byte *buf, const T &amp;val) noexcept</td></tr>
+<tr class="memdesc:af439426dbbcbf67b97170fa982159495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append an integral or <code>std::byte</code> value to a <code>std::byte</code> buffer, swapping into the specified endian order as needed.  <br /></td></tr>
+<tr class="separator:af439426dbbcbf67b97170fa982159495"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad76962a0d08ba32f2a35e5ece05b6170" id="r_ad76962a0d08ba32f2a35e5ece05b6170"><td class="memTemplParams" colspan="2">template&lt;std::unsigned_integral T&gt; </td></tr>
+<tr class="memitem:ad76962a0d08ba32f2a35e5ece05b6170"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">constexpr</a> std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#ad76962a0d08ba32f2a35e5ece05b6170">chops::append_var_int</a> (std::byte *<a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">output</a>, <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">T</a> <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">val</a>)</td></tr>
+<tr class="memdesc:ad76962a0d08ba32f2a35e5ece05b6170"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode an unsigned integer into a variable length buffer of bytes using the MSB (most significant bit) algorithm.  <br /></td></tr>
+<tr class="separator:ad76962a0d08ba32f2a35e5ece05b6170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad860e80909d613ae526cfb18696c4dc6" id="r_ad860e80909d613ae526cfb18696c4dc6"><td class="memTemplParams" colspan="2">template&lt;std::unsigned_integral T&gt; </td></tr>
+<tr class="memitem:ad860e80909d613ae526cfb18696c4dc6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">constexpr</a> <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">T</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="extract__append_8hpp.html#ad860e80909d613ae526cfb18696c4dc6">chops::extract_var_int</a> (<a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">const</a> std::byte *<a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">input</a>, std::size_t <a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">input_size</a>)</td></tr>
+<tr class="memdesc:ad860e80909d613ae526cfb18696c4dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a buffer of <code>std::bytes</code> that hold a variable sized integer, decode them into an unsigned integer.  <br /></td></tr>
+<tr class="separator:ad860e80909d613ae526cfb18696c4dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Functions to extract arithmetic binary values from a byte buffer (in big-endian) to native format; conversely, given an arithmetic binary value, append it to a buffer of bytes in network endian order (big-endian). </p>
-<p>The functions in this file are low-level, handling fundamental arithmetic types and extracting or appending to <code>std::byte</code> buffers. It is meant to be the lower layer of marshalling utilities, where the next layer up provides buffer management, sequences, and overloads for specific types such as <code>std::string</code>, <code>bool</code>, and <code>std::optional</code>.</p>
-<dl class="section note"><dt>Note</dt><dd>When C++ 20 <code>std::endian</code> is available, many of these functions can be made <code>constexpr</code> and evaluated at compile time. Until then, run-time endian detection and copying is performed.</dd>
-<dd>
-The variable sized integer functions (<code>extract_var_int</code>, <code>append_var_int</code>) support the variable byte integer type in MQTT (Message Queuing Telemetry Transport), a commonly used IoT protocol. The code in this header is adapted from a Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal license: <a href="https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/">https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/</a></dd>
-<dd>
-This implementation has manual generated unrolled loops for the byte moving and swapping. This can be improved in the future by using a compile-time unrolling utility, such as the <code>repeat</code> function (compile time unrolling version) by Vittorio Romeo.</dd></dl>
+<div class="textblock"><p>Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native format; conversely, given an arithmetic binary value, append it to a buffer of bytes in the specified endian order. </p>
+<p>The functions in this file are low-level. They handle fundamental arithmetic types and extracting or appending to <code>std::byte</code> buffers. It is meant to be the lower layer of serializing utilities, where the next higher layer provides buffer management, sequences, and overloads for specific types such as <code>std::string</code>, <code>bool</code>, and <code>std::optional</code>.</p>
+<dl class="section note"><dt>Note</dt><dd>The variable sized integer functions (<code>extract_var_int</code>, <code>append_var_int</code>) support the variable byte integer type in MQTT (Message Queuing Telemetry Transport), a commonly used IoT protocol. The code in this header is adapted from a Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal license: <a href="https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/">https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/</a></dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Cliff Green, Roxanne Agerone, Uli Koehler</dd></dl>
-<p>Copyright (c) 2019 by Cliff Green, Roxanne Agerone</p>
+<dl class="section copyright"><dt>Copyright</dt><dd>(c) 2019-2024 by Cliff Green, Roxanne Agerone</dd></dl>
 <p>Distributed under the Boost Software License, Version 1.0. (See accompanying file LICENSE.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt">http://www.boost.org/LICENSE_1_0.txt</a>) </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a806139ac5f96fba4ef57452bcb3bcb01" name="a806139ac5f96fba4ef57452bcb3bcb01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a806139ac5f96fba4ef57452bcb3bcb01">&#9670;&#160;</a></span>append_val()</h2>
+<a id="af439426dbbcbf67b97170fa982159495" name="af439426dbbcbf67b97170fa982159495"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af439426dbbcbf67b97170fa982159495">&#9670;&#160;</a></span>append_val()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;std::endian BufEndian, integral_or_byte T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t chops::append_val </td>
+          <td class="memname">constexpr std::size_t chops::append_val </td>
           <td>(</td>
           <td class="paramtype">std::byte *&#160;</td>
           <td class="paramname"><em>buf</em>, </td>
@@ -284,13 +197,20 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Append a fundamental arithmetic value to a <code>std::byte</code> buffer, swapping into network endian order (big-endian) as needed. </p>
-<p>This function template dispatches on specific sizes. If an unsupported size is attempted to be swapped, a static error is generated.</p>
+<p>Append an integral or <code>std::byte</code> value to a <code>std::byte</code> buffer, swapping into the specified endian order as needed. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">BufEndian</td><td>The endianness of the buffer.</td></tr>
+    <tr><td class="paramname">T</td><td>Type of value to append to buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The <code>BufEndian</code> enum must be specified, but the type of the passed in value can be deduced.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>Pointer to array of <code>std::bytes</code> big enough to hold the bytes of the value.</td></tr>
@@ -304,16 +224,19 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ae9845dd8c4b9246615481a1c6f449b0f" name="ae9845dd8c4b9246615481a1c6f449b0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9845dd8c4b9246615481a1c6f449b0f">&#9670;&#160;</a></span>append_var_int()</h2>
+<a id="ad76962a0d08ba32f2a35e5ece05b6170" name="ad76962a0d08ba32f2a35e5ece05b6170"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad76962a0d08ba32f2a35e5ece05b6170">&#9670;&#160;</a></span>append_var_int()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;std::unsigned_integral T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t chops::append_var_int </td>
+          <td class="memname">constexpr std::size_t chops::append_var_int </td>
           <td>(</td>
           <td class="paramtype">std::byte *&#160;</td>
           <td class="paramname"><em>output</em>, </td>
@@ -321,7 +244,7 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">T&#160;</td>
+          <td class="paramtype"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">T</a>&#160;</td>
           <td class="paramname"><em>val</em>&#160;</td>
         </tr>
         <tr>
@@ -330,13 +253,18 @@ template&lt;typename T &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Encode an unsigned integer into a variable length buffer of bytes using the MSB (most significant bit) algorithm. </p>
 <p>Given an integer, store the value in 1 or 2 or 3 or more bytes depending on the value. If small (under 128) the value is stored in one byte. If the value is greater than 127, the most significant bit in the first byte is set to 1 and the value is stored in two bytes. This logic is repeated as necessary.</p>
 <p>This algorithm optimizes space when most of the values are small. If most of the values are large, this algorithm is inefficient, needing more buffer space for the encoded integers than if fixed size integer buffers were used.</p>
-<p>The output of this function is (by definition) in little-endian order (which is opposite to the rest of the <code>append</code> and <code>extract</code> functions). However, this does not matter since there is no byte swapping performed, and encoding and decoding will result in the native endianness of the platform.</p>
-<dl class="section note"><dt>Note</dt><dd>Unsigned types are not supported.</dd></dl>
+<p>The output of this function is (by definition) in little-endian order. However, as long as the two corresponding functions (or equivalent algorithms) are used consistently, the endianness will not matter. There is no byte swapping performed, and encoding and decoding will result in the native endianness of the platform. I.e. this works whether serialization is big-endian or little-endian.</p>
+<dl class="section note"><dt>Note</dt><dd>Signed types are not supported.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">val</td><td>The input value. Any standard unsigned integer type is allowed.</td></tr>
@@ -349,34 +277,41 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab59bc2904ad9486a9b309bdebbd83ba2" name="ab59bc2904ad9486a9b309bdebbd83ba2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab59bc2904ad9486a9b309bdebbd83ba2">&#9670;&#160;</a></span>extract_val()</h2>
+<a id="a459b2f0978a1390fc05186a26c495777" name="a459b2f0978a1390fc05186a26c495777"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a459b2f0978a1390fc05186a26c495777">&#9670;&#160;</a></span>extract_val()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;std::endian BufEndian, integral_or_byte T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T chops::extract_val </td>
+          <td class="memname">constexpr T chops::extract_val </td>
           <td>(</td>
-          <td class="paramtype">const std::byte *&#160;</td>
+          <td class="paramtype"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">const</a> std::byte *&#160;</td>
           <td class="paramname"><em>buf</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Extract a value in network byte order (big-endian) from a <code>std::byte</code> buffer into a fundamental arithmetic type in native endianness, swapping bytes as needed. </p>
-<p>This function template dispatches on specific sizes. If an unsupported size is attempted to be swapped, a compile time error is generated.</p>
+<p>Extract a value from a <code>std::byte</code> buffer into a fundamental integral or <code>std::byte</code> type in native endianness, swapping bytes as needed. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">BufEndian</td><td>The endianness of the <code>std::byte</code> buffer.</td></tr>
+    <tr><td class="paramname">T</td><td>Type of return value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Since <code>T</code> cannot be deduced, it must be specified when calling the function. If the endianness of the buffer matches the native endianness, no swapping is performed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>Pointer to an array of <code>std::bytes</code> containing an object of type T in network byte order.</td></tr>
@@ -385,22 +320,26 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A value in native endian order.</dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd>The buffer must contain at least <code>sizeof(T)</code> bytes.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Floating point swapping is supported, but care must be taken. In particular, the floating point representation must exactly match on both sides of the marshalling (most modern processors use IEEE 754 floating point representations). A byte swapped floating point value cannot be directly accessed (e.g. passed by value), due to the bit patterns possibly representing NaN values, which can generate hardware traps, either causing runtime crashes or silently changing bits within the floating point number. An integer value, however, will always have valid bit patterns, even when byte swapped. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Floating point swapping is not supported.</dd></dl>
+<p>Earlier versions did support floating point, but it is brittle - the floating point representation must exactly match on both sides of the serialization (most modern processors use IEEE 754 floating point representations). A byte swapped floating point value cannot be directly accessed (e.g. passed by value), due to the bit patterns possibly representing NaN values, which can generate hardware traps, either causing runtime crashes or silently changing bits within the floating point number. An integer value, however, will always have valid bit patterns, even when byte swapped. </p>
 
 </div>
 </div>
-<a id="a9ca0853fe2aff5f30398cf7087d31b07" name="a9ca0853fe2aff5f30398cf7087d31b07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ca0853fe2aff5f30398cf7087d31b07">&#9670;&#160;</a></span>extract_var_int()</h2>
+<a id="ad860e80909d613ae526cfb18696c4dc6" name="ad860e80909d613ae526cfb18696c4dc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad860e80909d613ae526cfb18696c4dc6">&#9670;&#160;</a></span>extract_var_int()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T &gt; </div>
+template&lt;std::unsigned_integral T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T chops::extract_var_int </td>
+          <td class="memname">constexpr T chops::extract_var_int </td>
           <td>(</td>
-          <td class="paramtype">const std::byte *&#160;</td>
+          <td class="paramtype"><a class="el" href="extract__append_8hpp.html#af439426dbbcbf67b97170fa982159495">const</a> std::byte *&#160;</td>
           <td class="paramname"><em>input</em>, </td>
         </tr>
         <tr>
@@ -415,10 +354,16 @@ template&lt;typename T &gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Given a buffer of <code>std::bytes</code> that hold a variable sized integer, decode them into an unsigned integer. </p>
 <p>For consistency with the <code>append_var_int</code> function, only unsigned integers are supported for the output type of this function.</p>
+<dl class="section note"><dt>Note</dt><dd>Signed types are not supported.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">input</td><td>A variable-length encoded integer stored in a buffer of <code>std::bytes</code>.</td></tr>

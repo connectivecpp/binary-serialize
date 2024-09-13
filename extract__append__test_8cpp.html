@@ -87,53 +87,55 @@ $(function() {
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &quot;<a class="el" href="extract__append_8hpp_source.html">serialize/extract_append.hpp</a>&quot;</code><br />
 <code>#include &quot;utility/repeat.hpp&quot;</code><br />
-<code>#include &quot;utility/make_byte_array.hpp&quot;</code><br />
-<code>#include &quot;utility/cast_ptr_to.hpp&quot;</code><br />
+<code>#include &quot;utility/byte_array.hpp&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for extract_append_test.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="extract__append__test_8cpp__incl.png" border="0" usemap="#a_2github_2workspace_2test_2extract__append__test_8cpp" alt=""/></div>
 <map name="a_2github_2workspace_2test_2extract__append__test_8cpp" id="a_2github_2workspace_2test_2extract__append__test_8cpp">
-<area shape="rect" title="Test scenarios for extract_val and append_val functions." alt="" coords="339,5,506,46"/>
+<area shape="rect" title="Test scenarios for extract_val and append_val functions." alt="" coords="309,5,475,46"/>
 <area shape="rect" title=" " alt="" coords="5,94,205,120"/>
-<area shape="poly" title=" " alt="" coords="344,49,170,92,168,87,342,44"/>
-<area shape="rect" title=" " alt="" coords="209,168,273,193"/>
-<area shape="poly" title=" " alt="" coords="381,49,344,70,308,96,280,126,258,157,254,154,276,123,305,92,341,65,378,44"/>
-<area shape="rect" title=" " alt="" coords="298,168,358,193"/>
-<area shape="poly" title=" " alt="" coords="374,49,344,68,321,95,316,109,315,123,320,153,315,153,309,124,311,108,316,93,340,64,371,44"/>
-<area shape="rect" href="extract__append_8hpp.html" title="Functions to extract arithmetic binary values from a byte buffer (in big&#45;endian) to native format; co..." alt="" coords="330,94,515,120"/>
-<area shape="poly" title=" " alt="" coords="425,46,425,78,420,78,420,46"/>
-<area shape="rect" title=" " alt="" coords="488,168,632,193"/>
-<area shape="poly" title=" " alt="" coords="466,44,499,65,528,92,546,122,556,152,551,154,541,124,524,96,496,69,463,49"/>
-<area shape="rect" title=" " alt="" coords="589,94,704,120"/>
-<area shape="poly" title=" " alt="" coords="479,44,599,86,597,91,477,49"/>
-<area shape="rect" title=" " alt="" coords="728,94,906,120"/>
-<area shape="poly" title=" " alt="" coords="507,41,742,88,741,93,506,46"/>
-<area shape="poly" title=" " alt="" coords="393,123,287,164,285,159,391,118"/>
-<area shape="poly" title=" " alt="" coords="408,122,357,160,354,156,405,118"/>
-<area shape="poly" title=" " alt="" coords="447,118,524,158,522,162,444,123"/>
-<area shape="rect" title=" " alt="" coords="382,168,463,193"/>
-<area shape="poly" title=" " alt="" coords="425,120,425,152,420,152,420,120"/>
+<area shape="poly" title=" " alt="" coords="321,49,165,92,163,87,319,44"/>
+<area shape="rect" title=" " alt="" coords="346,241,411,267"/>
+<area shape="poly" title=" " alt="" coords="368,48,315,99,289,132,270,169,267,181,270,192,282,207,297,220,332,238,330,243,294,224,278,211,265,195,261,181,265,167,285,129,311,95,364,44"/>
+<area shape="rect" title=" " alt="" coords="280,168,341,193"/>
+<area shape="poly" title=" " alt="" coords="383,47,355,95,325,155,320,153,351,93,378,45"/>
+<area shape="rect" href="extract__append_8hpp.html" title="Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native f..." alt="" coords="365,94,549,120"/>
+<area shape="poly" title=" " alt="" coords="410,45,439,80,435,83,406,48"/>
+<area shape="rect" title=" " alt="" coords="573,94,688,120"/>
+<area shape="poly" title=" " alt="" coords="452,44,580,86,578,91,450,49"/>
+<area shape="rect" title=" " alt="" coords="712,94,850,120"/>
+<area shape="poly" title=" " alt="" coords="476,41,707,88,706,93,475,46"/>
+<area shape="poly" title=" " alt="" coords="445,122,425,143,406,169,393,198,386,227,380,226,388,197,401,166,421,139,441,118"/>
+<area shape="poly" title=" " alt="" coords="433,123,350,163,348,158,431,118"/>
+<area shape="rect" href="byteswap_8hpp.html" title="This is an implementation of the C++ 23 std::byteswap function, for use in pre C++ 23 applications." alt="" coords="624,168,775,193"/>
+<area shape="poly" title=" " alt="" coords="499,118,645,160,643,165,497,123"/>
+<area shape="rect" title=" " alt="" coords="636,241,710,267"/>
+<area shape="poly" title=" " alt="" coords="477,118,644,230,641,235,474,122"/>
+<area shape="rect" title=" " alt="" coords="758,241,796,267"/>
+<area shape="poly" title=" " alt="" coords="550,116,698,138,758,151,789,166,797,180,799,197,792,228,787,226,794,196,792,182,786,170,756,156,697,143,549,121"/>
+<area shape="rect" title=" " alt="" coords="832,241,882,267"/>
+<area shape="poly" title=" " alt="" coords="550,117,709,140,775,153,812,165,826,178,837,194,852,225,847,227,832,196,822,182,809,170,774,158,708,145,549,122"/>
+<area shape="rect" title=" " alt="" coords="505,241,580,267"/>
+<area shape="poly" title=" " alt="" coords="471,118,491,139,511,166,526,197,537,226,532,228,522,199,507,169,487,143,468,122"/>
+<area shape="rect" title=" " alt="" coords="416,168,498,193"/>
+<area shape="poly" title=" " alt="" coords="460,120,460,152,454,152,454,120"/>
+<area shape="poly" title=" " alt="" coords="645,197,426,245,425,240,644,191"/>
+<area shape="poly" title=" " alt="" coords="698,194,685,228,680,226,693,193"/>
+<area shape="poly" title=" " alt="" coords="715,192,755,229,751,233,711,196"/>
+<area shape="poly" title=" " alt="" coords="727,191,819,233,817,238,725,196"/>
+<area shape="poly" title=" " alt="" coords="674,196,584,237,582,232,672,191"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a46585c65cf643107d4d0e86d2abdc67c" id="r_a46585c65cf643107d4d0e86d2abdc67c"><td class="memItemLeft" align="right" valign="top"><a id="a46585c65cf643107d4d0e86d2abdc67c" name="a46585c65cf643107d4d0e86d2abdc67c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_CASE</b> (&quot;Size and arithmetic assertions&quot;, &quot;[assertions]&quot;)</td></tr>
-<tr class="separator:a46585c65cf643107d4d0e86d2abdc67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9016651f1b4ed7daa67973324e1acf91" id="r_a9016651f1b4ed7daa67973324e1acf91"><td class="memItemLeft" align="right" valign="top"><a id="a9016651f1b4ed7daa67973324e1acf91" name="a9016651f1b4ed7daa67973324e1acf91"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Endian detection&quot;, &quot;[endian] [little_endian]&quot;)</td></tr>
-<tr class="separator:a9016651f1b4ed7daa67973324e1acf91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accb8b4373d6b56ab7e6afcc692507d5c" id="r_accb8b4373d6b56ab7e6afcc692507d5c"><td class="memItemLeft" align="right" valign="top"><a id="accb8b4373d6b56ab7e6afcc692507d5c" name="accb8b4373d6b56ab7e6afcc692507d5c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Append values into a buffer&quot;, &quot;[append_val]&quot;)</td></tr>
-<tr class="separator:accb8b4373d6b56ab7e6afcc692507d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51e464029af1c82190f3ad562a69f05d" id="r_a51e464029af1c82190f3ad562a69f05d"><td class="memItemLeft" align="right" valign="top"><a id="a51e464029af1c82190f3ad562a69f05d" name="a51e464029af1c82190f3ad562a69f05d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Extract values from a buffer&quot;, &quot;[extract_val]&quot;)</td></tr>
-<tr class="separator:a51e464029af1c82190f3ad562a69f05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52e1ceb15932a6810a94bddf09d11c94" id="r_a52e1ceb15932a6810a94bddf09d11c94"><td class="memItemLeft" align="right" valign="top"><a id="a52e1ceb15932a6810a94bddf09d11c94" name="a52e1ceb15932a6810a94bddf09d11c94"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SCENARIO</b> (&quot;Floating point append and extract&quot;, &quot;[floating_point]&quot;)</td></tr>
-<tr class="separator:a52e1ceb15932a6810a94bddf09d11c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a909cf53d2f10d3eeb851ff5e978378" id="r_a0a909cf53d2f10d3eeb851ff5e978378"><td class="memItemLeft" align="right" valign="top"><a id="a0a909cf53d2f10d3eeb851ff5e978378" name="a0a909cf53d2f10d3eeb851ff5e978378"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_CASE</b> (&quot;Append values into a buffer&quot;, &quot;[append_val]&quot;)</td></tr>
+<tr class="separator:a0a909cf53d2f10d3eeb851ff5e978378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70eafe043f7b3c1e2931eeb2a4f6694d" id="r_a70eafe043f7b3c1e2931eeb2a4f6694d"><td class="memItemLeft" align="right" valign="top"><a id="a70eafe043f7b3c1e2931eeb2a4f6694d" name="a70eafe043f7b3c1e2931eeb2a4f6694d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_CASE</b> (&quot;Extract values from a buffer&quot;, &quot;[extract_val]&quot;)</td></tr>
+<tr class="separator:a70eafe043f7b3c1e2931eeb2a4f6694d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad34b4ac7cf900fec5e3e817ca5d17a5c" id="r_ad34b4ac7cf900fec5e3e817ca5d17a5c"><td class="memTemplParams" colspan="2"><a id="ad34b4ac7cf900fec5e3e817ca5d17a5c" name="ad34b4ac7cf900fec5e3e817ca5d17a5c"></a>
 template&lt;typename Dest , typename Src &gt; </td></tr>
 <tr class="memitem:ad34b4ac7cf900fec5e3e817ca5d17a5c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>test_round_trip_var_int</b> (Src src, std::size_t exp_sz)</td></tr>
@@ -183,16 +185,12 @@ constexpr std::int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>val
 <tr class="memitem:a742498e1ea0265857c8e28e12ae2382d" id="r_a742498e1ea0265857c8e28e12ae2382d"><td class="memItemLeft" align="right" valign="top"><a id="a742498e1ea0265857c8e28e12ae2382d" name="a742498e1ea0265857c8e28e12ae2382d"></a>
 constexpr std::byte&#160;</td><td class="memItemRight" valign="bottom"><b>val6</b> = static_cast&lt;std::byte&gt;(0xAA)</td></tr>
 <tr class="separator:a742498e1ea0265857c8e28e12ae2382d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fa3079e261ba9e63ee724be3ceaeb96" id="r_a7fa3079e261ba9e63ee724be3ceaeb96"><td class="memItemLeft" align="right" valign="top"><a id="a7fa3079e261ba9e63ee724be3ceaeb96" name="a7fa3079e261ba9e63ee724be3ceaeb96"></a>
-constexpr float&#160;</td><td class="memItemRight" valign="bottom"><b>float_val</b> = 42.0f</td></tr>
-<tr class="separator:a7fa3079e261ba9e63ee724be3ceaeb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93db6ca3d09b196179b25129fe1e217f" id="r_a93db6ca3d09b196179b25129fe1e217f"><td class="memItemLeft" align="right" valign="top"><a id="a93db6ca3d09b196179b25129fe1e217f" name="a93db6ca3d09b196179b25129fe1e217f"></a>
-constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>double_val</b> = 197.0</td></tr>
-<tr class="separator:a93db6ca3d09b196179b25129fe1e217f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e50ea8514e72a074bd6aaa8d1582562" id="r_a1e50ea8514e72a074bd6aaa8d1582562"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="extract__append__test_8cpp.html#a1e50ea8514e72a074bd6aaa8d1582562">arr_sz</a></td></tr>
 <tr class="separator:a1e50ea8514e72a074bd6aaa8d1582562"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbbc0486bbdc15623ebd52c614fa2a10" id="r_acbbc0486bbdc15623ebd52c614fa2a10"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="extract__append__test_8cpp.html#acbbc0486bbdc15623ebd52c614fa2a10">net_buf</a></td></tr>
-<tr class="separator:acbbc0486bbdc15623ebd52c614fa2a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa181ce8f30aac7ffce2aa66181376a6" id="r_aaa181ce8f30aac7ffce2aa66181376a6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="extract__append__test_8cpp.html#aaa181ce8f30aac7ffce2aa66181376a6">net_buf_big</a></td></tr>
+<tr class="separator:aaa181ce8f30aac7ffce2aa66181376a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad92e50cdb2c875f841506b05ee63a571" id="r_ad92e50cdb2c875f841506b05ee63a571"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="extract__append__test_8cpp.html#ad92e50cdb2c875f841506b05ee63a571">net_buf_little</a></td></tr>
+<tr class="separator:ad92e50cdb2c875f841506b05ee63a571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Test scenarios for <code>extract_val</code> and <code>append_val</code> functions. </p>
@@ -224,19 +222,35 @@ constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>double_va
 </div><!-- fragment -->
 </div>
 </div>
-<a id="acbbc0486bbdc15623ebd52c614fa2a10" name="acbbc0486bbdc15623ebd52c614fa2a10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbbc0486bbdc15623ebd52c614fa2a10">&#9670;&#160;</a></span>net_buf</h2>
+<a id="aaa181ce8f30aac7ffce2aa66181376a6" name="aaa181ce8f30aac7ffce2aa66181376a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa181ce8f30aac7ffce2aa66181376a6">&#9670;&#160;</a></span>net_buf_big</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">auto net_buf</td>
+          <td class="memname">auto net_buf_big</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= chops::make_byte_array(0xDD, 0xCC, 0xBB, 0xAA, 0xEE, 0x01, 0xFF,</div>
 <div class="line">    0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0xDE, 0xAD, 0xBE, 0xEF, 0xAA)</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ad92e50cdb2c875f841506b05ee63a571" name="ad92e50cdb2c875f841506b05ee63a571"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad92e50cdb2c875f841506b05ee63a571">&#9670;&#160;</a></span>net_buf_little</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto net_buf_little</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= chops::make_byte_array(0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x01,</div>
+<div class="line">    0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0xEF, 0xBE, 0xAD, 0xDE, 0xAA)</div>
 </div><!-- fragment -->
 </div>
 </div>

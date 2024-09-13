@@ -81,185 +81,250 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">binary_serialize.hpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="binary__serialize_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#ifndef MARSHALL_HPP_INCLUDED</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#define MARSHALL_HPP_INCLUDED</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#ifndef BINARY_SERIALIZE_HPP_INCLUDED</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#define BINARY_SERIALIZE_HPP_INCLUDED</span></div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#include &quot;utility/cast_ptr_to.hpp&quot;</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#include &quot;marshall/shared_buffer.hpp&quot;</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">#include &quot;marshall/extract_append.hpp&quot;</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#include &lt;cstddef&gt;</span> <span class="comment">// std::byte, std::size_t, std::nullptr_t</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#include &lt;cstdint&gt;</span> <span class="comment">// std::uint32_t, etc</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#include &lt;cstring&gt;</span> <span class="comment">// std::memcpy</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#include &lt;iterator&gt;</span> <span class="comment">// value type of iterator</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#include &quot;buffer/shared_buffer.hpp&quot;</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#include &quot;<a class="code" href="extract__append_8hpp.html">serialize/extract_append.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#include &lt;cstddef&gt;</span> <span class="comment">// std::byte, std::size_t, std::nullptr_t</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#include &lt;cstdint&gt;</span> <span class="comment">// std::uint32_t, etc</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">#include &lt;string_view&gt;</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#include &lt;cstring&gt;</span> <span class="comment">// std::memcpy</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#include &lt;iterator&gt;</span> <span class="comment">// value type of iterator</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#include &lt;concepts&gt;</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#include &lt;iostream&gt;</span> <span class="comment">// debugging</span></div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="keyword">namespace </span>chops {</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">template &lt;typename Cnt, typename Container&gt;</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">Container extract_sequence(const std::byte* buf) noexcept(fill in) {</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">  Cnt c = extract_val&lt;Cnt&gt;(buf);</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"></span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">}</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ctr&gt;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="keyword">concept </span>supports_expandable_buffer = </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>  std::same_as&lt;Ctr::value_type, std::byte&gt; &amp;&amp;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  <span class="keyword">requires</span> (Ctr ctr) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    { ctr.size() } -&gt; std::integral;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    ctr.resize(std::size_t{});</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    { ctr.data() } -&gt; std::same_as&lt;std::byte*&gt;;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>  }</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Ctr&gt;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="keyword">concept </span>supports_endian_expandable_buffer = </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>  supports_expandable_buffer&lt;Ctr&gt; &amp;&amp;</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  <span class="keyword">requires</span> (Ctr ctr) { </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">typename</span> Ctr::endian_type;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keyword">template</span> &lt;supports_expandable_buffer Ctr = chops::mutable_shared_buffer,</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>         std::endian Endian = std::endian::little&gt;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keyword">class </span>expandable_buffer {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>  Ctr      m_ctr;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>  <span class="keyword">using </span>endian_type = Endian;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>  <span class="keyword">using </span>value_type = std::byte;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>  Ctr&amp; get_buf() noexcept { <span class="keywordflow">return</span> m_ctr; }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>  std::size_t size() noexcept { <span class="keywordflow">return</span> m_ctr.size(); }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>  std::byte* data() noexcept { <span class="keywordflow">return</span> m_ctr.data(); }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>  <span class="keywordtype">void</span> resize(std::size_t sz) <span class="keyword">noexcept</span> m_ctr.resize(sz); }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>};</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">template &lt;typename Cnt, typename Iter&gt;</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">std::size_t append_sequence(std::byte* buf, Cnt cnt, Iter start, Iter end) noexcept {</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">  std::size_t num = 0;</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">  append_val(buf, cnt);</span></div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">  num += cnt;</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">  while (start != end) {</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">    num += append_val(buf, *start);</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">    ++start;</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">  }</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">}</span></div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="keyword">template</span> &lt;std::<span class="keywordtype">size_t</span> N&gt;</div>
-<div class="foldopen" id="foldopen00219" data-start="{" data-end="};">
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html">  219</a></span><span class="keyword">class </span><a class="code hl_class" href="classchops_1_1fixed__size__byte__array.html">fixed_size_byte_array</a> {</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html#aa5021d1bd05fcac64097cffe4df0427d">  225</a></span>  <a class="code hl_function" href="classchops_1_1fixed__size__byte__array.html#aa5021d1bd05fcac64097cffe4df0427d">fixed_size_byte_array</a>() noexcept : m_buf(), m_size(0u) { }</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="foldopen" id="foldopen00234" data-start="{" data-end="}">
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html#a05731334168e3e8ea8c8fdd13293318b">  234</a></span>  std::size_t <a class="code hl_function" href="classchops_1_1fixed__size__byte__array.html#a05731334168e3e8ea8c8fdd13293318b">size</a>() const noexcept {</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordflow">return</span> m_size;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>  }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="comment">template &lt;typename Cnt, typename Container&gt;</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment">Container extract_sequence(const std::byte* buf) noexcept(fill in) {</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">  Cnt c = extract_val&lt;Cnt&gt;(buf);</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment"></span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">}</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">template &lt;typename Cnt, typename Iter&gt;</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">std::size_t append_sequence(std::byte* buf, Cnt cnt, Iter start, Iter end) noexcept {</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span><span class="comment">  std::size_t num = 0;</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="comment">  append_val(buf, cnt);</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="comment">  num += cnt;</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="comment">  while (start != end) {</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">    num += append_val(buf, *start);</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">    ++start;</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment">  }</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">}</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keyword">template</span> &lt;std::<span class="keywordtype">size_t</span> N&gt;</div>
+<div class="foldopen" id="foldopen00252" data-start="{" data-end="};">
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html">  252</a></span><span class="keyword">class </span><a class="code hl_class" href="classfixed__size__byte__array.html">fixed_size_byte_array</a> {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html#a0d6c628e7a1166ff209ec13f388b3204">  258</a></span>  <a class="code hl_function" href="classfixed__size__byte__array.html#a0d6c628e7a1166ff209ec13f388b3204">fixed_size_byte_array</a>() noexcept : m_buf(), m_size(0u) { }</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="foldopen" id="foldopen00267" data-start="{" data-end="}">
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html#a72202ab6ad3647834a6bb75eaf56b76b">  267</a></span>  std::size_t <a class="code hl_function" href="classfixed__size__byte__array.html#a72202ab6ad3647834a6bb75eaf56b76b">size</a>() const noexcept {</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keywordflow">return</span> m_size;</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  }</div>
 </div>
-<div class="foldopen" id="foldopen00242" data-start="{" data-end="}">
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html#aa8cb04af165c7872098635c0546c5501">  242</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classchops_1_1fixed__size__byte__array.html#aa8cb04af165c7872098635c0546c5501">resize</a>(std::size_t sz) <span class="keyword">noexcept</span> {</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    assert(sz &lt;= N);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    m_size = sz;</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>  }</div>
+<div class="foldopen" id="foldopen00275" data-start="{" data-end="}">
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html#aae537a79a228e773ff47a7c51699e467">  275</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classfixed__size__byte__array.html#aae537a79a228e773ff47a7c51699e467">resize</a>(std::size_t sz) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>    assert(sz &lt;= N);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    m_size = sz;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  }</div>
 </div>
-<div class="foldopen" id="foldopen00251" data-start="{" data-end="}">
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html#a7f104fc3b4cd42af59863486082179ca">  251</a></span>  std::byte* <a class="code hl_function" href="classchops_1_1fixed__size__byte__array.html#a7f104fc3b4cd42af59863486082179ca">data</a>() noexcept {</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordflow">return</span> m_buf.data();</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  }</div>
+<div class="foldopen" id="foldopen00284" data-start="{" data-end="}">
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html#afe6d298372bd62d37442755ca3726f8e">  284</a></span>  std::byte* <a class="code hl_function" href="classfixed__size__byte__array.html#afe6d298372bd62d37442755ca3726f8e">data</a>() noexcept {</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordflow">return</span> m_buf.data();</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>  }</div>
 </div>
-<div class="foldopen" id="foldopen00258" data-start="{" data-end="}">
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="classchops_1_1fixed__size__byte__array.html#adadcdc882bf8494feef41dd098121dc2">  258</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classchops_1_1fixed__size__byte__array.html#adadcdc882bf8494feef41dd098121dc2">clear</a>() noexcept {</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    m_size = 0u;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  }</div>
+<div class="foldopen" id="foldopen00291" data-start="{" data-end="}">
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno"><a class="line" href="classfixed__size__byte__array.html#a885b5383d5c6d302acc1d7d0a6d4b6c7">  291</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classfixed__size__byte__array.html#a885b5383d5c6d302acc1d7d0a6d4b6c7">clear</a>() noexcept {</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    m_size = 0u;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>  }</div>
 </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  std::array&lt;std::byte, N&gt; m_buf;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  std::size_t              m_size;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>};</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>  </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>  std::array&lt;std::byte, N&gt; m_buf;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>  std::size_t              m_size;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>};</div>
 </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">// add a function parameter to the function overload set so that std::vector&lt;std::byte&gt; and </span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">// similar can be used for the Buf template parameter</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno"><a class="line" href="structchops_1_1adl__tag.html">  270</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structchops_1_1adl__tag.html">adl_tag</a> { };</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">// lower-level function template that performs the actual buffer manipulation and </span></div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="comment">// marshalling of a single value, with an ADL tag for full namespace inclusion in the</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">// overload set; this function template is not called directly by application code, and</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">// is only used with arithmetic values or a std::byte</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> T&amp; val, <a class="code hl_struct" href="structchops_1_1adl__tag.html">adl_tag</a>) {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  <span class="keyword">auto</span> old_sz = buf.size();</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  buf.resize(old_sz + <span class="keyword">sizeof</span>(CastValType));</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <a class="code hl_function" href="extract__append_8hpp.html#a806139ac5f96fba4ef57452bcb3bcb01">append_val</a>(buf.data()+old_sz, <span class="keyword">static_cast&lt;</span>CastValType<span class="keyword">&gt;</span>(val));</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>}</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer,</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>          <span class="keyword">typename</span> = std::enable_if_t&lt;detail::is_arithmetic_or_byte&lt;T&gt;()&gt; &gt;</div>
-<div class="foldopen" id="foldopen00327" data-start="{" data-end="}">
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="binary__serialize_8hpp.html#a95466a2650da78b0099f88521fd4fcfe">  327</a></span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> T&amp; val) {</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="keywordflow">return</span> marshall&lt;CastValType&gt;(buf, val, <a class="code hl_struct" href="structchops_1_1adl__tag.html">adl_tag</a> { });</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>}</div>
-</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">// overloads for specific types</span></div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastBoolType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>Buf&amp; marshall(Buf&amp; buf, <span class="keywordtype">bool</span> b) {</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>  <span class="keywordflow">return</span> marshall&lt;CastBoolType&gt;(buf, <span class="keyword">static_cast&lt;</span>CastBoolType<span class="keyword">&gt;</span>(b ? 1 : 0));</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>}</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastBoolType, <span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> std::optional&lt;T&gt;&amp; val) {</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>  marshall&lt;CastBoolType&gt;(buf, val.has_value());</div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>  <span class="keywordflow">if</span> (val.has_value()) {</div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (detail::is_arithmetic_or_byte&lt;T&gt;()) {</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>      marshall&lt;CastValType&gt;(buf, *val);</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>    }</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    <span class="keywordflow">else</span> { <span class="comment">// *val should be a UDT</span></div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>      marshall(buf, *val);</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>    }</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  }</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>  <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>}</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">// overload for sequences</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> Iter, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer,</div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>          <span class="keyword">typename</span> T = <span class="keyword">typename</span> std::iterator_traits&lt;Iter&gt;::value_type&gt;</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>Buf&amp; marshall_seq(Buf&amp; buf, std::size_t num_elems, Iter iter) {</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>  marshall&lt;CastCntType&gt;(buf, num_elems);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>  <span class="keywordflow">for</span> (std::size_t i = 0u; i &lt; num_elems; ++i) {</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (detail::is_arithmetic_or_byte&lt;T&gt;()) {</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>      marshall&lt;CastValType&gt;(buf, *iter);</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    }</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>      marshall(buf, *iter);</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    }</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    ++iter;</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>  }</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>  <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>}</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="comment">// efficiently append a buffer of bytes to the end of the existing buffer</span></div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>Buf&amp; marshall_buf(Buf&amp; buf, std::size_t num_bytes, <span class="keyword">const</span> std::byte* append_buf) {</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>  <span class="keyword">auto</span> old_sz = buf.size();</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>  buf.resize(old_sz + num_bytes);</div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>  std::memcpy (buf.data()+old_sz, append_buf, num_bytes);</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>  <span class="keywordflow">return</span> buf;</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>}</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>Buf&amp; marshall(Buf&amp; buf, std::string_view str) {</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>  marshall&lt;CastCntType&gt;(buf, str.size());</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>  <span class="keywordflow">return</span> marshall_buf(buf, str.size(), cast_ptr_to&lt;std::byte&gt;(str.data()));</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>}</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> std::string&amp; str) {</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>  <span class="keywordflow">return</span> marshall&lt;CastCntType&gt;(buf, std::string_view(str));</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>}</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> <span class="keywordtype">char</span>* str) {</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>  <span class="keywordflow">return</span> marshall&lt;CastCntType&gt;(buf, std::string_view(str));</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>}</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>} <span class="comment">// end namespace</span></div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html">chops::fixed_size_byte_array</a></div><div class="ttdoc">Extract a sequence in network byte order from a std::byte buffer into the provided container.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:219</div></div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html_a05731334168e3e8ea8c8fdd13293318b"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html#a05731334168e3e8ea8c8fdd13293318b">chops::fixed_size_byte_array::size</a></div><div class="ttdeci">std::size_t size() const noexcept</div><div class="ttdoc">Return the size of the data which has been written into the buffer.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:234</div></div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html_a7f104fc3b4cd42af59863486082179ca"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html#a7f104fc3b4cd42af59863486082179ca">chops::fixed_size_byte_array::data</a></div><div class="ttdeci">std::byte * data() noexcept</div><div class="ttdoc">Return a pointer to the beginning of the buffer.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:251</div></div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html_aa5021d1bd05fcac64097cffe4df0427d"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html#aa5021d1bd05fcac64097cffe4df0427d">chops::fixed_size_byte_array::fixed_size_byte_array</a></div><div class="ttdeci">fixed_size_byte_array() noexcept</div><div class="ttdoc">Default construct the @ fixed_size_byte_array.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:225</div></div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html_aa8cb04af165c7872098635c0546c5501"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html#aa8cb04af165c7872098635c0546c5501">chops::fixed_size_byte_array::resize</a></div><div class="ttdeci">void resize(std::size_t sz) noexcept</div><div class="ttdoc">Increase the logical size, allowing bytes to be appended.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:242</div></div>
-<div class="ttc" id="aclasschops_1_1fixed__size__byte__array_html_adadcdc882bf8494feef41dd098121dc2"><div class="ttname"><a href="classchops_1_1fixed__size__byte__array.html#adadcdc882bf8494feef41dd098121dc2">chops::fixed_size_byte_array::clear</a></div><div class="ttdeci">void clear() noexcept</div><div class="ttdoc">Logically reset so that new data can be written into the buffer at the beginning.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:258</div></div>
-<div class="ttc" id="aextract__append_8hpp_html_a806139ac5f96fba4ef57452bcb3bcb01"><div class="ttname"><a href="extract__append_8hpp.html#a806139ac5f96fba4ef57452bcb3bcb01">chops::append_val</a></div><div class="ttdeci">std::size_t append_val(std::byte *buf, const T &amp;val) noexcept</div><div class="ttdoc">Append a fundamental arithmetic value to a std::byte buffer, swapping into network endian order (big-...</div><div class="ttdef"><b>Definition</b> extract_append.hpp:387</div></div>
-<div class="ttc" id="astructchops_1_1adl__tag_html"><div class="ttname"><a href="structchops_1_1adl__tag.html">chops::adl_tag</a></div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:270</div></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="comment">// add a function parameter to the function overload set so that std::vector&lt;std::byte&gt; and </span></div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="comment">// similar can be used for the Buf template parameter</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno"><a class="line" href="structadl__tag.html">  303</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structadl__tag.html">adl_tag</a> { };</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="keyword">namespace </span>detail {</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="keyword">template</span> &lt;integral_or_byte CastTypeVal, integral_or_byte T, </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>          supports_endian_expandable_buf Buf = expandable_buffer&gt;</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="keyword">constexpr</span> Buf&amp; serialize_val(Buf&amp; buf, <span class="keyword">const</span> T&amp; val) {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  <span class="keyword">auto</span> old_sz = buf.size();</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>  buf.resize(old_sz + <span class="keyword">sizeof</span>(CastTypeVal));</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>  append_val&lt;Buf::endian_type&gt;(buf.data()+old_sz, <span class="keyword">static_cast&lt;</span>CastTypeVal<span class="keyword">&gt;</span>(val));</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>  <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>}</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="keyword">template</span> &lt;integral_or_byte CastTypeVal, integral_or_byte T,</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>          supports_endian_expandable Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keyword">constexpr</span> Buf&amp; serialize(Buf&amp; buf, <span class="keyword">const</span> T&amp; val) {</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>  <span class="keywordflow">return</span> serialize_val&lt;CastTypeVal&gt; (buf, val);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>}</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="keyword">template</span> &lt;integral_or_byte CastTypeSz, integral_or_byte CastTypeVal,</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>          integral_or_byte T,</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>          supports_endian_expandable Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="keyword">constexpr</span> Buf&amp; serialize(Buf&amp; buf, <span class="keyword">const</span> T* seq, std::size_t sz) {</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  serialize_val&lt;CastTypeSz&gt; (buf, sz);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i {0}; i &lt; sz; ++i) {</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    serialize_val&lt;CastTypeVal&gt;(buf, seq[i]);</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  }</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>}</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="keyword">template</span> &lt;integral_or_byte CastTypeSz,</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>          supports_endian_expandable Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="keyword">constexpr</span> Buf&amp; serialize(Buf&amp; buf, <span class="keyword">const</span> std::string&amp; str) {</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>  <span class="keywordflow">return</span> serialize&lt;CastTypeSz, std::byte&gt; (buf, str.data(), std.size());</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>}</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span><span class="keyword">template</span> &lt;integral_or_byte CastTypeBool, integral_or_byte CastTypeVal,</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>          integral_or_byte T,</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>          supports_endian_expandable Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="keyword">constexpr</span> Buf&amp; serialize(Buf&amp; buf, <span class="keyword">const</span> std::optional&lt;T&gt;&amp; val) {</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>  <span class="keywordflow">if</span> (val) </div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>    serialize_val&lt;CastTypeBool&gt; (buf, 1);</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>    <span class="keywordflow">return</span> serialize_val&lt;CastTypeVal&gt; (buf, *val);</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>  }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  serialize_val&lt;CastTypeBool&gt; (buf, 0);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>}</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>}</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer,</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>          <span class="keyword">typename</span> = std::enable_if_t&lt;detail::is_arithmetic_or_byte&lt;T&gt;()&gt; &gt;</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> T&amp; val) {</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="keywordflow">return</span> marshall&lt;CastValType&gt;(buf, val, <a class="code hl_struct" href="structadl__tag.html">adl_tag</a> { });</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>}</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="comment">// overloads for specific types</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastBoolType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>Buf&amp; marshall(Buf&amp; buf, <span class="keywordtype">bool</span> b) {</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>  <span class="keywordflow">return</span> marshall&lt;CastBoolType&gt;(buf, <span class="keyword">static_cast&lt;</span>CastBoolType<span class="keyword">&gt;</span>(b ? 1 : 0));</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>}</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span> </div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastBoolType, <span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> T, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> std::optional&lt;T&gt;&amp; val) {</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>  marshall&lt;CastBoolType&gt;(buf, val.has_value());</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>  <span class="keywordflow">if</span> (val.has_value()) {</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (detail::is_arithmetic_or_byte&lt;T&gt;()) {</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>      marshall&lt;CastValType&gt;(buf, *val);</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    }</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    <span class="keywordflow">else</span> { <span class="comment">// *val should be a UDT</span></div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>      marshall(buf, *val);</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    }</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  }</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>}</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span> </div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="comment">// overload for sequences</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> CastValType, <span class="keyword">typename</span> Iter, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer,</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>          <span class="keyword">typename</span> T = <span class="keyword">typename</span> std::iterator_traits&lt;Iter&gt;::value_type&gt;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>Buf&amp; marshall_seq(Buf&amp; buf, std::size_t num_elems, Iter iter) {</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  marshall&lt;CastCntType&gt;(buf, num_elems);</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>  <span class="keywordflow">for</span> (std::size_t i = 0u; i &lt; num_elems; ++i) {</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (detail::is_arithmetic_or_byte&lt;T&gt;()) {</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>      marshall&lt;CastValType&gt;(buf, *iter);</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    }</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>      marshall(buf, *iter);</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    }</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    ++iter;</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>  }</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>  <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>}</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span> </div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="comment">// efficiently append a buffer of bytes to the end of the existing buffer</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>Buf&amp; marshall_buf(Buf&amp; buf, std::size_t num_bytes, <span class="keyword">const</span> std::byte* append_buf) {</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>  <span class="keyword">auto</span> old_sz = buf.size();</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>  buf.resize(old_sz + num_bytes);</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>  std::memcpy (buf.data()+old_sz, append_buf, num_bytes);</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>  <span class="keywordflow">return</span> buf;</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>}</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span> </div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>Buf&amp; marshall(Buf&amp; buf, std::string_view str) {</div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>  marshall&lt;CastCntType&gt;(buf, str.size());</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>  <span class="keywordflow">return</span> marshall_buf(buf, str.size(), cast_ptr_to&lt;std::byte&gt;(str.data()));</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>}</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span> </div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> std::string&amp; str) {</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>  <span class="keywordflow">return</span> marshall&lt;CastCntType&gt;(buf, std::string_view(str));</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>}</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span> </div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CastCntType, <span class="keyword">typename</span> Buf = chops::mutable_shared_buffer&gt;</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>Buf&amp; marshall(Buf&amp; buf, <span class="keyword">const</span> <span class="keywordtype">char</span>* str) {</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>  <span class="keywordflow">return</span> marshall&lt;CastCntType&gt;(buf, std::string_view(str));</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>}</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span> </div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>} <span class="comment">// end namespace</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span> </div>
+<div class="ttc" id="aclassfixed__size__byte__array_html"><div class="ttname"><a href="classfixed__size__byte__array.html">fixed_size_byte_array</a></div><div class="ttdoc">Extract a sequence in network byte order from a std::byte buffer into the provided container.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:252</div></div>
+<div class="ttc" id="aclassfixed__size__byte__array_html_a0d6c628e7a1166ff209ec13f388b3204"><div class="ttname"><a href="classfixed__size__byte__array.html#a0d6c628e7a1166ff209ec13f388b3204">fixed_size_byte_array::fixed_size_byte_array</a></div><div class="ttdeci">fixed_size_byte_array() noexcept</div><div class="ttdoc">Default construct the @ fixed_size_byte_array.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:258</div></div>
+<div class="ttc" id="aclassfixed__size__byte__array_html_a72202ab6ad3647834a6bb75eaf56b76b"><div class="ttname"><a href="classfixed__size__byte__array.html#a72202ab6ad3647834a6bb75eaf56b76b">fixed_size_byte_array::size</a></div><div class="ttdeci">std::size_t size() const noexcept</div><div class="ttdoc">Return the size of the data which has been written into the buffer.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:267</div></div>
+<div class="ttc" id="aclassfixed__size__byte__array_html_a885b5383d5c6d302acc1d7d0a6d4b6c7"><div class="ttname"><a href="classfixed__size__byte__array.html#a885b5383d5c6d302acc1d7d0a6d4b6c7">fixed_size_byte_array::clear</a></div><div class="ttdeci">void clear() noexcept</div><div class="ttdoc">Logically reset so that new data can be written into the buffer at the beginning.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:291</div></div>
+<div class="ttc" id="aclassfixed__size__byte__array_html_aae537a79a228e773ff47a7c51699e467"><div class="ttname"><a href="classfixed__size__byte__array.html#aae537a79a228e773ff47a7c51699e467">fixed_size_byte_array::resize</a></div><div class="ttdeci">void resize(std::size_t sz) noexcept</div><div class="ttdoc">Increase the logical size, allowing bytes to be appended.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:275</div></div>
+<div class="ttc" id="aclassfixed__size__byte__array_html_afe6d298372bd62d37442755ca3726f8e"><div class="ttname"><a href="classfixed__size__byte__array.html#afe6d298372bd62d37442755ca3726f8e">fixed_size_byte_array::data</a></div><div class="ttdeci">std::byte * data() noexcept</div><div class="ttdoc">Return a pointer to the beginning of the buffer.</div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:284</div></div>
+<div class="ttc" id="aextract__append_8hpp_html"><div class="ttname"><a href="extract__append_8hpp.html">extract_append.hpp</a></div><div class="ttdoc">Functions to extract arithmetic binary values from a byte buffer (in either endian order) to native f...</div></div>
+<div class="ttc" id="astructadl__tag_html"><div class="ttname"><a href="structadl__tag.html">adl_tag</a></div><div class="ttdef"><b>Definition</b> binary_serialize.hpp:303</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

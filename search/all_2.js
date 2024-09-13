@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['classes_20and_20functions_20for_20big_20endian_20binary_20data_0',['Classes and functions for big-endian binary data',['../group__marshall__module.html',1,'']]],
-  ['clear_1',['clear',['../classchops_1_1fixed__size__byte__array.html#adadcdc882bf8494feef41dd098121dc2',1,'chops::fixed_size_byte_array']]]
+  ['chops_3a_3aintegral_5for_5fbyte_0',['integral_or_byte',['../conceptchops_1_1integral__or__byte.html',1,'chops']]],
+  ['classes_20and_20functions_20for_20binary_20data_20serialization_1',['Binary Serialuze, Classes and Functions For Binary Data Serialization',['../index.html',1,'']]],
+  ['clear_2',['clear',['../classfixed__size__byte__array.html#a885b5383d5c6d302acc1d7d0a6d4b6c7',1,'fixed_size_byte_array']]]
 ];

@@ -1,0 +1,20 @@
+<map id="/github/workspace/test/byteswap_test.cpp" name="/github/workspace/test/byteswap_test.cpp">
+<area shape="rect" id="Node000001" title="Test scenarios for byteswap function." alt="" coords="199,5,352,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,94,205,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,49,146,90,144,85,232,44"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="222,168,287,193"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="276,47,261,152,256,152,270,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="280,94,341,120"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="287,45,301,78,296,81,282,47"/>
+<area shape="rect" id="Node000005" href="$byteswap_8hpp.html" title="This is an implementation of the C++ 23 std::byteswap function, for use in pre C++ 23 applications." alt="" coords="364,94,515,120"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="318,44,402,85,400,89,315,49"/>
+<area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="409,123,301,164,299,159,407,118"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="316,168,390,193"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="427,122,381,160,377,156,423,118"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="414,168,452,193"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="441,120,438,152,433,152,436,120"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="476,168,526,193"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="452,118,483,154,479,157,448,122"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="549,168,624,193"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="466,118,549,158,546,163,463,123"/>
+</map>
