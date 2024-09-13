@@ -1,305 +1,49 @@
 /** @file
  *
- *  @brief Functions to extract arithmetic binary values from a byte buffer (in big-endian) to 
- *  native format; conversely, given an arithmetic binary value, append it to a buffer of bytes 
- *  in network endian order (big-endian).
+ * @brief Functions to extract arithmetic binary values from a byte buffer (in either
+ * endian order) to native format; conversely, given an arithmetic binary value, append 
+ * it to a buffer of bytes in the specified endian order.
  *
- *  The functions in this file are low-level, handling fundamental arithmetic types and 
- *  extracting or appending to @c std::byte buffers. It is meant to be the lower layer
- *  of marshalling utilities, where the next layer up provides buffer management,
- *  sequences, and overloads for specific types such as @c std::string, @c bool, and 
- *  @c std::optional.
+ * The functions in this file are low-level. They handle fundamental arithmetic types and 
+ * extracting or appending to @c std::byte buffers. It is meant to be the lower layer
+ * of serializing utilities, where the next higher layer provides buffer management,
+ * sequences, and overloads for specific types such as @c std::string, @c bool, and 
+ * @c std::optional.
  *
- *  @note When C++ 20 @c std::endian is available, many of these functions can be made
- *  @c constexpr and evaluated at compile time. Until then, run-time endian detection and 
- *  copying is performed.
+ * @note The variable sized integer functions (@c extract_var_int, @c append_var_int) 
+ * support the variable byte integer type in MQTT (Message Queuing Telemetry Transport),
+ * a commonly used IoT protocol. The code in this header is adapted from a 
+ * Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal 
+ * license:
+ * https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/
  *
- *  @note The variable sized integer functions (@c extract_var_int, @c append_var_int) 
- *  support the variable byte integer type in MQTT (Message Queuing Telemetry Transport),
- *  a commonly used IoT protocol. The code in this header is adapted from a 
- *  Techoverflow.net article by Uli Koehler and published under the CC0 1.0 Universal 
- *  license:
- *  https://techoverflow.net/2013/01/25/efficiently-encoding-variable-length-integers-in-cc/
+ * @author Cliff Green, Roxanne Agerone, Uli Koehler
  *
- *  @note This implementation has manual generated unrolled loops for the byte moving and
- *  swapping. This can be improved in the future by using a compile-time unrolling utility, such 
- *  as the @c repeat function (compile time unrolling version) by Vittorio Romeo.
+ * @copyright (c) 2019-2024 by Cliff Green, Roxanne Agerone
  *
- *  @author Cliff Green, Roxanne Agerone, Uli Koehler
- *
- *  Copyright (c) 2019 by Cliff Green, Roxanne Agerone
- *
- *  Distributed under the Boost Software License, Version 1.0. 
- *  (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ * Distributed under the Boost Software License, Version 1.0. 
+ * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  *
  */
 
 #ifndef EXTRACT_APPEND_HPP_INCLUDED
 #define EXTRACT_APPEND_HPP_INCLUDED
 
-#include "utility/cast_ptr_to.hpp"
+#include "serialize/byteswap.hpp"
 
+#include <concepts> // std::unsigned_integral, std::integral
+#include <algorithm> // std::ranges:copy
+#include <bit> // std::endian, std::bit_cast
+#include <array>
 #include <cstddef> // std::byte, std::size_t
 #include <cstdint> // std::uint32_t, etc
-#include <type_traits> // std::is_arithmetic
+#include <type_traits> // std::is_same
+
 
 namespace chops {
 
-namespace detail {
-
-// since function template partial specialization is not supported (yet) in C++, overload the 
-// extract_val_swap and noswap function templates with a parameter corresponding to the 
-// sizeof the value; no data is passed in the second parameter, only using the type for overloading
-
-template <unsigned int>
-struct size_tag { };
-
-// if char / byte, no swap needed
-template <typename T>
-T extract_val_swap(const std::byte* buf, const size_tag<1u>*) noexcept {
-  return static_cast<T>(*buf); // static_cast needed to convert std::byte to char type
-}
-template <typename T>
-T extract_val_noswap(const std::byte* buf, const size_tag<1u>*) noexcept {
-  return static_cast<T>(*buf); // see note above
-}
-
-template <typename T>
-T extract_val_swap(const std::byte* buf, const size_tag<2u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+1);
-  *(p+1) = *(buf+0);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_noswap(const std::byte* buf, const size_tag<2u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+0);
-  *(p+1) = *(buf+1);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_swap(const std::byte* buf, const size_tag<4u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+3);
-  *(p+1) = *(buf+2);
-  *(p+2) = *(buf+1);
-  *(p+3) = *(buf+0);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_noswap(const std::byte* buf, const size_tag<4u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+0);
-  *(p+1) = *(buf+1);
-  *(p+2) = *(buf+2);
-  *(p+3) = *(buf+3);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_swap(const std::byte* buf, const size_tag<8u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+7);
-  *(p+1) = *(buf+6);
-  *(p+2) = *(buf+5);
-  *(p+3) = *(buf+4);
-  *(p+4) = *(buf+3);
-  *(p+5) = *(buf+2);
-  *(p+6) = *(buf+1);
-  *(p+7) = *(buf+0);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_noswap(const std::byte* buf, const size_tag<8u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+0);
-  *(p+1) = *(buf+1);
-  *(p+2) = *(buf+2);
-  *(p+3) = *(buf+3);
-  *(p+4) = *(buf+4);
-  *(p+5) = *(buf+5);
-  *(p+6) = *(buf+6);
-  *(p+7) = *(buf+7);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_swap(const std::byte* buf, const size_tag<16u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+15);
-  *(p+1) = *(buf+14);
-  *(p+2) = *(buf+13);
-  *(p+3) = *(buf+12);
-  *(p+4) = *(buf+11);
-  *(p+5) = *(buf+10);
-  *(p+6) = *(buf+9);
-  *(p+7) = *(buf+8);
-  *(p+8) = *(buf+7);
-  *(p+9) = *(buf+6);
-  *(p+10) = *(buf+5);
-  *(p+11) = *(buf+4);
-  *(p+12) = *(buf+3);
-  *(p+13) = *(buf+2);
-  *(p+14) = *(buf+1);
-  *(p+15) = *(buf+0);
-  return tmp;
-}
-
-template <typename T>
-T extract_val_noswap(const std::byte* buf, const size_tag<16u>*) noexcept {
-  T tmp{};
-  std::byte* p = cast_ptr_to<std::byte>(&tmp);
-  *(p+0) = *(buf+0);
-  *(p+1) = *(buf+1);
-  *(p+2) = *(buf+2);
-  *(p+3) = *(buf+3);
-  *(p+4) = *(buf+4);
-  *(p+5) = *(buf+5);
-  *(p+6) = *(buf+6);
-  *(p+7) = *(buf+7);
-  *(p+8) = *(buf+8);
-  *(p+9) = *(buf+9);
-  *(p+10) = *(buf+10);
-  *(p+11) = *(buf+11);
-  *(p+12) = *(buf+12);
-  *(p+13) = *(buf+13);
-  *(p+14) = *(buf+14);
-  *(p+15) = *(buf+15);
-  return tmp;
-}
-
-template <typename T>
-std::size_t append_val_swap(std::byte* buf, const T& val, const size_tag<1u>*) noexcept {
-  *buf = static_cast<std::byte>(val); // static_cast needed to convert char to std::byte
-  return 1u;
-}
-
-template <typename T>
-std::size_t append_val_noswap(std::byte* buf, const T& val, const size_tag<1u>*) noexcept {
-  *buf = static_cast<std::byte>(val); // see note above
-  return 1u;
-}
-
-template <typename T>
-std::size_t append_val_swap(std::byte* buf, const T& val, const size_tag<2u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+1);
-  *(buf+1) = *(p+0);
-  return 2u;
-}
-
-template <typename T>
-std::size_t append_val_noswap(std::byte* buf, const T& val, const size_tag<2u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+0);
-  *(buf+1) = *(p+1);
-  return 2u;
-}
-
-template <typename T>
-std::size_t append_val_swap(std::byte* buf, const T& val, const size_tag<4u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+3);
-  *(buf+1) = *(p+2);
-  *(buf+2) = *(p+1);
-  *(buf+3) = *(p+0);
-  return 4u;
-}
-
-template <typename T>
-std::size_t append_val_noswap(std::byte* buf, const T& val, const size_tag<4u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+0);
-  *(buf+1) = *(p+1);
-  *(buf+2) = *(p+2);
-  *(buf+3) = *(p+3);
-  return 4u;
-}
-
-template <typename T>
-std::size_t append_val_swap(std::byte* buf, const T& val, const size_tag<8u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+7);
-  *(buf+1) = *(p+6);
-  *(buf+2) = *(p+5);
-  *(buf+3) = *(p+4);
-  *(buf+4) = *(p+3);
-  *(buf+5) = *(p+2);
-  *(buf+6) = *(p+1);
-  *(buf+7) = *(p+0);
-  return 8u;
-}
-
-template <typename T>
-std::size_t append_val_noswap(std::byte* buf, const T& val, const size_tag<8u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+0);
-  *(buf+1) = *(p+1);
-  *(buf+2) = *(p+2);
-  *(buf+3) = *(p+3);
-  *(buf+4) = *(p+4);
-  *(buf+5) = *(p+5);
-  *(buf+6) = *(p+6);
-  *(buf+7) = *(p+7);
-  return 8u;
-}
-
-template <typename T>
-std::size_t append_val_swap(std::byte* buf, const T& val, const size_tag<16u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+15);
-  *(buf+1) = *(p+14);
-  *(buf+2) = *(p+13);
-  *(buf+3) = *(p+12);
-  *(buf+4) = *(p+11);
-  *(buf+5) = *(p+10);
-  *(buf+6) = *(p+9);
-  *(buf+7) = *(p+8);
-  *(buf+8) = *(p+7);
-  *(buf+9) = *(p+6);
-  *(buf+10) = *(p+5);
-  *(buf+11) = *(p+4);
-  *(buf+12) = *(p+3);
-  *(buf+13) = *(p+2);
-  *(buf+14) = *(p+1);
-  *(buf+15) = *(p+0);
-  return 16u;
-}
-
-template <typename T>
-std::size_t append_val_noswap(std::byte* buf, const T& val, const size_tag<16u>*) noexcept {
-  const std::byte* p = cast_ptr_to<std::byte>(&val);
-  *(buf+0) = *(p+0);
-  *(buf+1) = *(p+1);
-  *(buf+2) = *(p+2);
-  *(buf+3) = *(p+3);
-  *(buf+4) = *(p+4);
-  *(buf+5) = *(p+5);
-  *(buf+6) = *(p+6);
-  *(buf+7) = *(p+7);
-  *(buf+8) = *(p+8);
-  *(buf+9) = *(p+9);
-  *(buf+10) = *(p+10);
-  *(buf+11) = *(p+11);
-  *(buf+12) = *(p+12);
-  *(buf+13) = *(p+13);
-  *(buf+14) = *(p+14);
-  *(buf+15) = *(p+15);
-  return 16u;
-}
-
+// Old static assertions, pre-concepts
+/*
 template <typename T>
 constexpr void assert_size() noexcept {
   static_assert(sizeof(T) == 1u || sizeof(T) == 2u || sizeof(T) == 4u || 
@@ -316,28 +60,30 @@ constexpr void assert_arithmetic_or_byte() noexcept {
   static_assert(is_arithmetic_or_byte<T>(),
     "Value extraction is only supported for arithmetic or std::byte types.");
 }
+*/
 
-} // end namespace detail
+// using C++ 20 concepts
+template <typename T>
+concept integral_or_byte = std::integral<T> || std::is_same_v<std::remove_cv_t<T>, std::byte>;
 
-// C++ 20 will contain std::endian, which allows full compile time endian detection;
-// until then, the endian detection and branching will be runtime, although it
-// can be computed at global initialization instead of each time it is called
-
-inline bool detect_big_endian () noexcept {
-  const std::uint32_t tmp {0xDDCCBBAA};
-  return *(cast_ptr_to<std::byte>(&tmp) + 3) == static_cast<std::byte>(0xAA);
-}
-
+// old endian detection code
+// inline bool detect_big_endian () noexcept {
+//  const std::uint32_t tmp {0xDDCCBBAA};
+//  return *(cast_ptr_to<std::byte>(&tmp) + 3) == static_cast<std::byte>(0xAA);
+//}
 // should be computed at global initialization time
-
-const bool big_endian = detect_big_endian();
+// const bool big_endian = detect_big_endian();
 
 /**
- * @brief Extract a value in network byte order (big-endian) from a @c std::byte buffer 
- * into a fundamental arithmetic type in native endianness, swapping bytes as needed.
+ * @brief Extract a value from a @c std::byte buffer into a fundamental integral
+ * or @c std::byte type in native endianness, swapping bytes as needed.
  *
- * This function template dispatches on specific sizes. If an unsupported size is attempted
- * to be swapped, a compile time error is generated.
+ * @tparam BufEndian The endianness of the @c std::byte buffer.
+ *
+ * @tparam T Type of return value.
+ *
+ * Since @c T cannot be deduced, it must be specified when calling the function. If
+ * the endianness of the buffer matches the native endianness, no swapping is performed.
  *
  * @param buf Pointer to an array of @c std::bytes containing an object of type T in network 
  * byte order.
@@ -346,8 +92,10 @@ const bool big_endian = detect_big_endian();
  *
  * @pre The buffer must contain at least @c sizeof(T) bytes.
  *
- * @note Floating point swapping is supported, but care must be taken. In particular, 
- * the floating point representation must exactly match on both sides of the marshalling
+ * @note Floating point swapping is not supported.
+ *
+ * Earlier versions did support floating point, but it is brittle - 
+ * the floating point representation must exactly match on both sides of the serialization
  * (most modern processors use IEEE 754 floating point representations). A byte swapped
  * floating point value cannot be directly accessed (e.g. passed by value), due to the
  * bit patterns possibly representing NaN values, which can generate hardware traps,
@@ -355,22 +103,27 @@ const bool big_endian = detect_big_endian();
  * An integer value, however, will always have valid bit patterns, even when byte swapped.
  *
  */
-template <typename T>
-T extract_val(const std::byte* buf) noexcept {
-
-  detail::assert_size<T>();
-  detail::assert_arithmetic_or_byte<T>();
-
-  return big_endian ? detail::extract_val_noswap<T>(buf, static_cast< const detail::size_tag<sizeof(T)>* >(nullptr)) :
-                      detail::extract_val_swap<T>(buf, static_cast< const detail::size_tag<sizeof(T)>* >(nullptr));
+template <std::endian BufEndian, integral_or_byte T>
+constexpr T extract_val(const std::byte* buf) noexcept {
+  auto value_representation = std::bit_cast<std::array<std::byte, sizeof(T)>>(T{});
+  std::ranges::copy (buf, buf + sizeof(T), value_representation.begin());
+  auto tmp_val = std::bit_cast<T>(value_representation);
+  if constexpr (BufEndian != std::endian::native && sizeof(T) != 1u) {
+    return chops::byteswap(tmp_val);
+  }
+  return tmp_val;
 }
 
 /**
- * @brief Append a fundamental arithmetic value to a @c std::byte buffer, swapping into network
- * endian order (big-endian) as needed.
+ * @brief Append an integral or @c std::byte value to a @c std::byte buffer, swapping into
+ * the specified endian order as needed.
  *
- * This function template dispatches on specific sizes. If an unsupported size is attempted
- * to be swapped, a static error is generated.
+ * @tparam BufEndian The endianness of the buffer.
+ *
+ * @tparam T Type of value to append to buffer.
+ *
+ * The @c BufEndian enum must be specified, but the type of the passed in value can be
+ * deduced.
  *
  * @param buf Pointer to array of @c std::bytes big enough to hold the bytes of the value.
  *
@@ -383,14 +136,15 @@ T extract_val(const std::byte* buf) noexcept {
  * @note See note above about floating point values.
  *
  */
-template <typename T>
-std::size_t append_val(std::byte* buf, const T& val) noexcept {
-
-  detail::assert_size<T>();
-  detail::assert_arithmetic_or_byte<T>();
-
-  return big_endian ? detail::append_val_noswap(buf, val, static_cast< const detail::size_tag<sizeof(T)>* >(nullptr)) :
-                      detail::append_val_swap(buf, val, static_cast< const detail::size_tag<sizeof(T)>* >(nullptr));
+template <std::endian BufEndian, integral_or_byte T>
+constexpr std::size_t append_val(std::byte* buf, const T& val) noexcept {
+  T tmp_val {val};
+  if constexpr (BufEndian != std::endian::native && sizeof(T) != 1u) {
+    tmp_val = chops::byteswap(tmp_val);
+  }
+  auto value_representation = std::bit_cast<std::array<std::byte, sizeof(T)>>(tmp_val);
+  std::ranges::copy (value_representation, buf );
+  return sizeof(T);
 }
 
 /**
@@ -406,12 +160,13 @@ std::size_t append_val(std::byte* buf, const T& val) noexcept {
  * large, this algorithm is inefficient, needing more buffer space for the encoded integers than
  * if fixed size integer buffers were used.
  *
- * The output of this function is (by definition) in little-endian order (which is opposite
- * to the rest of the @c append and @c extract functions). However, this does not matter since
- * there is no byte swapping performed, and encoding and decoding will result in the native 
- * endianness of the platform.
+ * The output of this function is (by definition) in little-endian order. However, as long as
+ * the two corresponding functions (or equivalent algorithms) are used consistently, the
+ * endianness will not matter. There is no byte swapping performed, and encoding and decoding 
+ * will result in the native endianness of the platform. I.e. this works whether serialization 
+ * is big-endian or little-endian.
  * 
- * @note Unsigned types are not supported.
+ * @note Signed types are not supported.
  *
  * @param val The input value. Any standard unsigned integer type is allowed.
  *
@@ -425,25 +180,22 @@ std::size_t append_val(std::byte* buf, const T& val) noexcept {
  *
  */
 
-template<typename T>
-std::size_t append_var_int(std::byte* output, T val) {
+template<std::unsigned_integral T>
+constexpr std::size_t append_var_int(std::byte* output, T val) {
 
-    static_assert(std::is_unsigned<T>::value, "Only unsigned integer types are supported.");
-
-    std::uint8_t* output_ptr = cast_ptr_to<std::uint8_t>(output);
-    std::size_t output_size = 0;
+  std::size_t output_size = 0;
     
-    // While more than 7 bits of data are left, occupy the last output byte
-    // and set the next byte flag
-    while (val > 127) {
+  // While more than 7 bits of data are left, occupy the last output byte
+  // and set the next byte flag
+  while (val > 127) {
 
-        output_ptr[output_size] = (static_cast<std::uint8_t> (val & 127)) | 128;
-        //Remove the seven bits we just wrote
-        val >>= 7;
-        ++output_size;
-    }
-    output_ptr[output_size++] = static_cast<std::uint8_t> (val) & 127;
-    return output_size;
+      output[output_size] = std::bit_cast<std::byte>(static_cast<std::uint8_t>((static_cast<std::uint8_t> (val & 127)) | 128));
+      //Remove the seven bits we just wrote
+      val >>= 7;
+      ++output_size;
+  }
+  output[output_size++] = std::bit_cast<std::byte>(static_cast<std::uint8_t>(static_cast<std::uint8_t> (val) & 127));
+  return output_size;
 }
 /**
  * @brief Given a buffer of @c std::bytes that hold a variable sized integer, decode
@@ -452,6 +204,8 @@ std::size_t append_var_int(std::byte* output, T val) {
  * For consistency with the @c append_var_int function, only unsigned integers are
  * supported for the output type of this function.
  *
+ * @note Signed types are not supported.
+ *
  * @param input A variable-length encoded integer stored in a buffer of @c std::bytes.
  *
  * @param input_size Number of bytes representing the integer.
@@ -459,22 +213,17 @@ std::size_t append_var_int(std::byte* output, T val) {
  * @return The value in native unsigned integer format.
  * 
  */
-template<typename T>
-T extract_var_int(const std::byte* input, std::size_t input_size) {
-
-    static_assert(std::is_unsigned<T>::value, "Only unsigned integer types are supported.");
-
-    const std::uint8_t* input_ptr = cast_ptr_to<std::uint8_t> (input);
-    
-    T ret = 0;
-    for (std::size_t i = 0; i < input_size; ++i) {
-        ret |= (input_ptr[i] & 127) << (7 * i);
-        //If the next-byte flag is set
-        if(!(input_ptr[i] & 128)) {
-            break;
-        }
-    }
-    return ret;
+template<std::unsigned_integral T>
+constexpr T extract_var_int(const std::byte* input, std::size_t input_size) {
+  T ret = 0;
+  for (std::size_t i = 0; i < input_size; ++i) {
+      ret |= (std::bit_cast<std::uint8_t>(input[i]) & 127) << (7 * i);
+      //If the next-byte flag is set
+      if(!(std::bit_cast<std::uint8_t>(input[i]) & 128)) {
+          break;
+      }
+  }
+  return ret;
 }
 
 } // end namespace
