@@ -11,8 +11,8 @@ project ( binary_serialize_test LANGUAGES CXX )
 # add dependencies
 include ( ../cmake/download_cpm.cmake )
 
-CPMAddPackage ( "gh:catchorg/Catch2@3.7.0" )
-CPMAddPackage ( "gh:connectivecpp/utility-rack@1.0.3" )
+CPMAddPackage ( "gh:catchorg/Catch2@3.8.0" )
+CPMAddPackage ( "gh:connectivecpp/utility-rack@1.0.4" )
 
 set ( test_app_names byteswap_test
                      extract_append_test
