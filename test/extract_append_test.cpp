@@ -4,7 +4,7 @@
  *
  * @author Cliff Green, Roxanne Agerone
  *
- * @copyright (c) 2019-2024 by Cliff Green, Roxanne Agerone
+ * @copyright (c) 2019-2025 by Cliff Green, Roxanne Agerone
  *
  * Distributed under the Boost Software License, Version 1.0. 
  * (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,10 +16,10 @@
 
 #include <cstddef> // std::byte
 #include <cstdint> // std::uint32_t, etc
+#include <ranges> // std::views::iota
 
 #include "serialize/extract_append.hpp"
 
-#include "utility/repeat.hpp"
 #include "utility/byte_array.hpp"
 
 constexpr std::uint32_t val1 = 0xDDCCBBAA;
@@ -65,8 +65,9 @@ TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
     REQUIRE(chops::append_val<std::endian::big>(ptr, val4) == 8u); ptr += sizeof(val4);
     REQUIRE(chops::append_val<std::endian::big>(ptr, val5) == 4u); ptr += sizeof(val5);
     REQUIRE(chops::append_val<std::endian::big>(ptr, val6) == 1u);
-    chops::repeat(arr_sz, [&buf] (int i) { 
-        REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_big[i])); } );
+    for (int i : std::views::iota(0, arr_sz)) {
+      REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_big[i]));
+    }
   }
   SECTION ("Append_val with multiple values, little endian") {
     std::byte* ptr = buf;
@@ -76,8 +77,9 @@ TEST_CASE ( "Append values into a buffer", "[append_val]" ) {
     REQUIRE(chops::append_val<std::endian::little>(ptr, val4) == 8u); ptr += sizeof(val4);
     REQUIRE(chops::append_val<std::endian::little>(ptr, val5) == 4u); ptr += sizeof(val5);
     REQUIRE(chops::append_val<std::endian::little>(ptr, val6) == 1u);
-    chops::repeat(arr_sz, [&buf] (int i) { 
-        REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_little[i])); } );
+    for (int i : std::views::iota(0, arr_sz)) {
+      REQUIRE (std::to_integer<int>(buf[i]) == std::to_integer<int>(net_buf_little[i]));
+    }
   }
 }
 
