@@ -1,4 +1,4 @@
-# Copyright (c) 2024 by Cliff Green
+# Copyright (c) 2024-2025 by Cliff Green
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.txt or copy at https://www.boost.org/LICENSE_1_0.txt)
@@ -12,7 +12,7 @@ project ( binary_serialize_test LANGUAGES CXX )
 include ( ../cmake/download_cpm.cmake )
 
 CPMAddPackage ( "gh:catchorg/Catch2@3.8.0" )
-CPMAddPackage ( "gh:connectivecpp/utility-rack@1.0.4" )
+CPMAddPackage ( "gh:connectivecpp/utility-rack@1.0.5" )
 
 set ( test_app_names byteswap_test
                      extract_append_test
