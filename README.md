@@ -61,7 +61,7 @@ Inspiration and thanks go to [Louis Langholtz](https://github.com/louis-langholt
 
 The generated Doxygen documentation for `binary_serialize` is [here](https://connectivecpp.github.io/binary-serialize/).
 
-## Dependencies
+## Library Dependencies
 
 The `binary_serialize` header files do not have any third-party dependencies. It uses C++ standard library headers only. The unit test code does have dependencies as noted below.
 
