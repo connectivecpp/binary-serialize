@@ -23,6 +23,11 @@ project ( binary_serialize
 add_library ( binary_serialize INTERFACE )
 add_library ( chops::binary_serialize ALIAS binary_serialize )
 
+# dependencies needed for main library
+
+include ( cmake/download_cpm.cmake )
+CPMAddPackage ( "gh:connectivecpp/shared-buffer@1.0.4" )
+
 # configure library target
 
 target_include_directories ( binary_serialize INTERFACE
