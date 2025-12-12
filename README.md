@@ -61,9 +61,9 @@ Inspiration and thanks go to [Louis Langholtz](https://github.com/louis-langholt
 
 The generated Doxygen documentation for `binary_serialize` is [here](https://connectivecpp.github.io/binary-serialize/).
 
-## Dependencies
+## Library Dependencies
 
-The `binary_serialize` header files do not have any third-party dependencies. It uses C++ standard library headers only. The unit test code does have dependencies as noted below.
+The [`shared_buffer`](https://github.com/connectivecpp/shared-buffer) library from Connective C++ is a dependency, providing reference counted `std::byte` buffers, but only as a default template argument for certain serialization functions.
 
 ## C++ Standard
 
