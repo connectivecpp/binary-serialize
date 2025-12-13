@@ -14,9 +14,9 @@ project ( binary_serialize
 	  DESCRIPTION "Binary serialization with std::format like syntax"
 	  HOMEPAGE_URL "https://github.com/connectivecpp/binary-serialize/" )
 
-  option ( BINARY_SERIALIZE_BUILD_TESTS "Build unit tests" OFF )
-  option ( BINARY_SERIALIZE_BUILD_EXAMPLES "Build examples" OFF )
-  option ( BINARY_SERIALIZE_INSTALL "Install header only library" OFF )
+option ( BINARY_SERIALIZE_BUILD_TESTS "Build unit tests" OFF )
+option ( BINARY_SERIALIZE_BUILD_EXAMPLES "Build examples" OFF )
+option ( BINARY_SERIALIZE_INSTALL "Install header only library" OFF )
 
 # add library targets
 
